@@ -111,3 +111,26 @@ body[data-crm-view="register"] .crmCreateBtn { display: none; }
 .personalExpenseSummary em { padding: 7px 10px; border: 1px solid; border-radius: 999px; font-style: normal; font-size: var(--f-md); font-weight: 1000; }
 .personalExpenseSummary em.paid { color: var(--good); background: rgba(57, 217, 138, .12); border-color: rgba(57, 217, 138, .34); } .personalExpenseSummary em.pending { color: var(--bad); background: rgba(255, 93, 93, .12); border-color: rgba(255, 93, 93, .34); }
 .personalExpenseDetails { padding: 12px 14px 14px; border-top: 1px solid var(--line); } .personalExpenseActions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+
+/* ---------- tablet e celular: grades do Comercial e das Despesas pessoais ----------
+   (ficam depois das regras base; no app.css elas seriam sobrescritas) */
+@media (max-width: 1100px) {
+  .personalFinanceDashboard { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .personalFinanceFilters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .crmDoctorFilters { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .personalFinanceDashboard { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .personalFinanceDashboard > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .personalFinanceForm, .personalFinanceFilters, .crmFormGrid, .crmFormGrid3, .crmCommercialBox, .commercialChartGrid, .crmToolbar,
+  .crmDoctorFilters, .crmDoctorFilters.commercialCombinedFilters { grid-template-columns: minmax(0, 1fr); }
+  .commercialKpis, .crmTimeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .crmTabs { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+  .span2, .personalFinanceFilters > :nth-child(2) { grid-column: 1 / -1; } /* "ocupar 2 colunas" cria coluna extra numa grade de 1 coluna */
+}
+@media (max-width: 400px) {
+  .personalExpenseSummary { grid-template-columns: minmax(0, 1fr) auto; }
+  .personalExpenseSummary > :first-child { grid-column: 1 / -1; }
+  .personalExpenseSummary b, .personalExpenseSummary small { overflow-wrap: anywhere; }
+  .personalFinanceKpi b { font-size: 17px; }
+}
