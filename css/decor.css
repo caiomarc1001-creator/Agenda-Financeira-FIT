@@ -1,0 +1,62 @@
+/* Decoração por tema: faixa do cabeçalho (Senna) e miniaturas do Estúdio de Tema. */
+body[data-theme="senna_brasil"] .hdr::before {
+  content: ""; position: absolute; inset: auto 0 0 0; height: 25px; z-index: 1; pointer-events: none;
+  background: linear-gradient(90deg, #009739 0 42%, #fff 42% 46%, #0b1d6b 46% 100%);
+}
+
+.themePreview { position: relative; height: 118px; margin-bottom: 8px; overflow: hidden; border: 1px solid rgba(255, 255, 255, .18); border-radius: 16px; }
+.themePreview span { display: none; }
+.themePreview::before, .themePreview::after { position: absolute; }
+.themePreview::after { content: ""; font-weight: 1000; line-height: 1; }
+
+.themePreview_senna_brasil { background: linear-gradient(rgba(255, 215, 0, .1), rgba(255, 215, 0, .18)), linear-gradient(#ffd700 0 66%, #009739 66% 76%, #fff 76% 80%, #0b1d6b 80% 100%); }
+.themePreview_senna_brasil::before { content: ""; inset: 2px 4px 18px 4px; background: url("../assets/senna-car.png") center / contain no-repeat; }
+.themePreview_senna_brasil::after { inset: auto 0 0 0; height: 17px; background: linear-gradient(#009739 0 34%, #fff 34% 48%, #0b1d6b 48% 100%); }
+
+.themePreview_nasa { background: radial-gradient(circle at 22% 28%, rgba(255, 255, 255, .78) 0 1px, transparent 1.5px), radial-gradient(circle at 72% 22%, rgba(255, 255, 255, .55) 0 1px, transparent 1.5px), radial-gradient(90px 55px at 78% 74%, rgba(252, 61, 33, .25), transparent 64%), linear-gradient(135deg, #061226, #0b1f3a 58%, #020817); }
+.themePreview_nasa::before { content: ""; left: 16px; top: 34px; width: 88px; height: 3px; background: #fc3d21; }
+.themePreview_nasa::after { content: "NASA"; left: 18px; top: 22px; font-size: 21px; letter-spacing: .08em; color: #fff; }
+
+.themePreview_tesla { background: radial-gradient(120px 60px at 76% 62%, rgba(232, 33, 39, .38), transparent 70%), linear-gradient(135deg, #050505, #151515 60%, #2b2b2b); }
+.themePreview_tesla::before { content: ""; left: 28px; top: 62px; width: 118px; height: 32px; background: linear-gradient(90deg, #e82127, #f4f4f4); }
+.themePreview_tesla::after { content: "TESLA"; left: 18px; top: 18px; font-size: 22px; letter-spacing: .16em; color: #fff; }
+
+.themePreview_windows_xp { background: radial-gradient(70px 28px at 28% 22%, rgba(255, 255, 255, .95), transparent 70%), radial-gradient(110px 34px at 68% 18%, rgba(255, 255, 255, .92), transparent 70%), linear-gradient(#5aa9ff 0 56%, #6fca45 56% 100%); }
+.themePreview_windows_xp::after { content: "XP"; left: 18px; top: 60px; font-size: 30px; color: #fff; }
+
+.themePreview_toy_story { background: radial-gradient(58px 24px at 22% 28%, #fff, transparent 72%), radial-gradient(78px 30px at 74% 22%, #fff, transparent 72%), linear-gradient(#86d3ff, #2f78d6); }
+.themePreview_toy_story::after { content: "TOY"; left: 16px; top: 62px; font-size: 30px; color: #ffd230; }
+
+.themePreview_sexta_13 { background: radial-gradient(80px 72px at 72% 42%, rgba(255, 255, 255, .18), transparent 58%), radial-gradient(260px 100px at 50% 0, rgba(193, 18, 31, .36), transparent 64%), linear-gradient(135deg, #060000, #240000); }
+.themePreview_sexta_13::before { content: ""; left: 22px; top: 26px; width: 52px; height: 66px; background: linear-gradient(#e7e2d4, #9d9383); }
+.themePreview_sexta_13::after { content: "13"; left: 92px; top: 24px; font-size: 44px; color: #c1121f; }
+
+.themePreview_game_of_thrones { background: radial-gradient(140px 70px at 50% 40%, rgba(155, 123, 79, .45), transparent 72%), linear-gradient(135deg, #10151c, #27313d); }
+.themePreview_game_of_thrones::after { content: "♛"; left: 81px; top: 53px; font-size: 62px; font-weight: 400; color: #d7c09a; }
+
+.themePreview_sonic { background: radial-gradient(80px 80px at 76% 50%, rgba(255, 215, 0, .95) 0 18%, transparent 19% 100%), radial-gradient(180px 90px at 22% 34%, rgba(14, 165, 255, .45), transparent 65%), linear-gradient(135deg, #061b3d, #0a56c2); }
+.themePreview_sonic::after { content: "⚡"; left: 28px; top: 21px; font-size: 58px; font-weight: 400; color: #ffd700; }
+
+.themePreview_resident_evil_2 { background: radial-gradient(130px 70px at 72% 52%, rgba(139, 30, 30, .38), transparent 70%), linear-gradient(135deg, #080b10, #182533); }
+.themePreview_resident_evil_2::after { content: "RPD"; left: 20px; top: 24px; font-size: 32px; letter-spacing: .12em; color: #d8d8d6; }
+
+.themePreview_dark { background: radial-gradient(130px 70px at 72% 28%, rgba(96, 165, 250, .34), transparent 70%), linear-gradient(135deg, #070b14, #0b1330); }
+.themePreview_dark::after { content: "DARK"; left: 18px; top: 68px; font-size: 24px; color: #f2f6ff; }
+.themePreview_light { background: linear-gradient(135deg, #eef3ff, #fff 58%, #cfdcff); }
+.themePreview_light::after { content: "LIGHT"; left: 18px; top: 68px; font-size: 24px; color: #0b1220; }
+
+.themePreview_ocean { background: radial-gradient(90px 46px at 68% 34%, rgba(125, 211, 252, .55), transparent 72%), linear-gradient(#06131f 0, #0a2940 62%, #38bdf8 180%); }
+.themePreview_ocean::after { content: "≈≈≈"; left: 18px; top: 49px; font-size: 35px; letter-spacing: .08em; color: #ecfeff; }
+.themePreview_violet { background: radial-gradient(120px 90px at 70% 34%, rgba(196, 181, 253, .42), transparent 70%), linear-gradient(135deg, #12081f, #2d1457); }
+.themePreview_violet::after { content: "✦"; left: 30px; top: 18px; font-size: 58px; font-weight: 400; color: #f5f3ff; }
+.themePreview_gold { background: radial-gradient(120px 70px at 72% 28%, rgba(250, 204, 21, .35), transparent 68%), linear-gradient(135deg, #120d04, #3b2b08); }
+.themePreview_gold::after { content: "GOLD"; left: 18px; top: 65px; font-size: 26px; letter-spacing: .08em; color: #facc15; }
+.themePreview_graphite { background: repeating-linear-gradient(135deg, rgba(255, 255, 255, .05) 0 4px, rgba(255, 255, 255, .01) 4px 9px), linear-gradient(135deg, #111317, #1b2028); }
+.themePreview_graphite::after { content: "CARBON"; left: 18px; top: 68px; font-size: 24px; letter-spacing: .08em; color: #f7fafc; }
+.themePreview_paper { background: linear-gradient(135deg, #f7f7f4, #ece9e1); }
+.themePreview_paper::before { content: ""; left: 20px; top: 14px; width: 122px; height: 88px; }
+.themePreview_paper::after { content: "PAPER"; left: 18px; top: 72px; font-size: 22px; color: #18212b; }
+.themePreview_emerald { background: radial-gradient(100px 70px at 70% 35%, rgba(52, 211, 153, .35), transparent 68%), linear-gradient(135deg, #071610, #0d2a20); }
+.themePreview_emerald::after { content: "◆"; left: 30px; top: 22px; font-size: 54px; font-weight: 400; color: #34d399; }
+.themePreview_custom { background: linear-gradient(135deg, #22304f, #3b82f6 50%, #8b5cf6); }
+.themePreview_custom::after { content: "CUSTOM"; left: 18px; top: 69px; font-size: 23px; letter-spacing: .08em; color: #fff; }

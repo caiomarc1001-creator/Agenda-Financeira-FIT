@@ -1,0 +1,68 @@
+/* Tokens padrão (tema Dark / Personalizado). Os temas prontos redefinem estes tokens em themes.css. */
+:root {
+  --bg0: #070b14; --bg1: #0b1330; --card: rgba(16, 22, 42, .85); --line: rgba(255, 255, 255, .10);
+  --txt: #f2f6ff; --mut: rgba(242, 246, 255, .72); --mut2: rgba(242, 246, 255, .56);
+  --acc: #60a5fa; --good: #39d98a; --warn: #ffb020; --bad: #ff5d5d; --shadow: 0 16px 60px rgba(0, 0, 0, .45);
+  --cellH: 128px; --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+  --crm-alert-color: #ff5d5d; --crm-alert-soft: rgba(255, 93, 93, .26); --crm-alert-strong: rgba(255, 93, 93, .62); --crm-alert-glow: rgba(255, 93, 93, .32); --crm-form-bg: rgba(255, 255, 255, .10);
+
+  /* escala responsiva */
+  --f-md: clamp(12px, .84vw, 15px); --f-sm: clamp(11px, .72vw, 13px); --f-xs: clamp(10px, .64vw, 12px); --f-lg: clamp(15px, 1.25vw, 22px);
+  --gap-xs: clamp(4px, .42vw, 8px); --gap-sm: clamp(6px, .62vw, 10px); --gap-md: clamp(8px, .86vw, 14px); --gap-lg: clamp(10px, 1.15vw, 18px);
+  --radius: clamp(12px, 1vw, 18px); --side-w: clamp(240px, 20vw, 320px);
+}
+
+body {
+  /* superfícies padrão derivadas das variáveis base (usadas pelo tema personalizado) */
+  --ui-window-bg: linear-gradient(180deg, color-mix(in srgb, var(--card) 96%, white 4%), color-mix(in srgb, var(--card) 88%, var(--bg0) 12%));
+  --ui-panel-bg: linear-gradient(180deg, color-mix(in srgb, var(--card) 94%, white 6%), color-mix(in srgb, var(--card) 84%, var(--bg1) 16%));
+  --ui-text: var(--txt); --ui-muted: var(--mut); --ui-border: var(--line);
+  --ui-field-bg: #f8fbff; --ui-field-text: #101827; --ui-placeholder: #5b687b;
+  --ui-menu-bg: linear-gradient(180deg, color-mix(in srgb, var(--card) 94%, white 6%), color-mix(in srgb, var(--card) 82%, var(--bg0) 18%));
+  --ui-menu-border: var(--line); --ui-menu-button-bg: linear-gradient(180deg, #fff, #e5edf8); --ui-menu-button-text: #101827; --ui-menu-button-border: var(--line);
+  --ui-header-text: var(--txt); --ui-header-muted: var(--mut);
+  --surface-calendar-title-bg: linear-gradient(180deg, #0b1220, #111827); --surface-calendar-title-text: #fff;
+  --component-neutral-bg: var(--ui-menu-button-bg); --component-neutral-text: var(--ui-menu-button-text); --component-neutral-border: var(--ui-menu-button-border);
+  --component-active-bg: linear-gradient(135deg, var(--acc), #111827); --component-active-text: #fff; --component-active-border: var(--acc);
+  --component-choice-bg: var(--component-neutral-bg); --component-choice-text: var(--component-neutral-text); --component-choice-border: var(--component-neutral-border);
+  --component-choice-active-bg: var(--component-active-bg); --component-choice-active-text: var(--component-active-text); --component-choice-active-border: var(--component-active-border);
+  --component-danger-bg: linear-gradient(180deg, #c7352b, #8f1d18); --component-danger-text: #fff; --component-danger-border: #7f1d1d;
+
+  /* superfícies da página */
+  --page-img: radial-gradient(1400px 700px at 20% 0%, rgba(96, 165, 250, .33), transparent 60%), radial-gradient(1200px 600px at 80% 0%, rgba(139, 92, 246, .28), transparent 60%), linear-gradient(180deg, var(--bg1), var(--bg0)); --page-col: transparent;
+  --hdr-img: linear-gradient(180deg, rgba(0, 0, 0, .42), rgba(0, 0, 0, .08)); --hdr-col: transparent; --hdr-border: 1px solid var(--line); --hdr-shadow: none;
+  --card-img: linear-gradient(180deg, var(--card), rgba(0, 0, 0, .06)); --card-col: transparent; --card-border: 1px solid var(--line); --card-shadow: var(--shadow);
+  --cell-img: linear-gradient(180deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .02)); --cell-col: transparent; --cell-border: 1px solid var(--line); --cell-shadow: none;
+  --today-img: linear-gradient(180deg, rgba(250, 204, 21, .18), rgba(255, 255, 255, .04)); --today-col: transparent; --today-border: 1px solid rgba(250, 204, 21, .98);
+  --today-shadow: 0 0 0 3px rgba(250, 204, 21, .34) inset, 0 0 0 2px rgba(250, 204, 21, .34), 0 0 28px rgba(250, 204, 21, .28);
+  --sel-shadow: 0 0 0 2px rgba(96, 165, 250, .32) inset; --other-opacity: .35;
+  --pill-img: linear-gradient(180deg, rgba(255, 255, 255, .10), rgba(255, 255, 255, .03)); --pill-col: transparent; --pill-border: 1px solid var(--line);
+  --side-img: linear-gradient(180deg, rgba(255, 255, 255, .14), rgba(255, 255, 255, .05)); --side-col: transparent; --side-border: 1px solid var(--line); --side-shadow: 0 12px 34px rgba(0, 0, 0, .22);
+  --month-col: rgba(255, 255, 255, .10); --month-border: 1px solid rgba(255, 255, 255, .22); --month-color: #fff; --month-shadow: none;
+  --sub-img: linear-gradient(180deg, rgba(255, 255, 255, .09), rgba(255, 255, 255, .03)); --sub-col: transparent; --sub-border: 1px solid var(--line); --sub-shadow: none;
+  --badge-img: none; --badge-col: rgba(255, 255, 255, .07); --badge-border: 1px solid var(--line); --badge-shadow: none;
+  --status-img: none; --status-col: rgba(255, 255, 255, .06); --status-border: 1px solid var(--line); --status-shadow: none; --status-color: var(--txt);
+  --hamb-img: linear-gradient(180deg, rgba(255, 255, 255, .11), rgba(255, 255, 255, .05)); --hamb-col: transparent; --hamb-border: 1px solid var(--line); --hamb-shadow: none;
+  --helper-img: none; --helper-col: rgba(96, 165, 250, .10); --helper-border: 1px dashed rgba(96, 165, 250, .40); --helper-color: #eef4ff;
+  --payrow-img: linear-gradient(180deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .02)); --payrow-col: transparent; --payrow-border: 1px solid var(--line); --payrow-shadow: none;
+  --mini-img: none; --mini-col: rgba(255, 255, 255, .05); --mini-border: 1px solid var(--line); --mini-shadow: none;
+
+  /* textos e detalhes por tema */
+  --caltitle-border: 0 none transparent; --btn-shadow: none; --btnp-shadow: 0 12px 26px color-mix(in srgb, var(--acc) 22%, transparent);  --todaynum-color: #fff7c2; --num-color: var(--txt); --pill-color: var(--txt); --sub-color: var(--txt); --payrow-color: var(--txt); --mini-color: var(--txt);
+  --ttl-color: var(--txt); --subtxt-color: var(--mut); --lbltxt-color: var(--mut); --minik-color: var(--mut); --payA-color: var(--txt); --paysmall-color: var(--mut);
+  --uname-color: var(--txt); --uemail-color: var(--mut); --hdrtxt-color: var(--txt);
+  --body-color: var(--txt); --brand-padl: 0px; --strip-mt: 6px; --todaynum-tshadow: none; --sel-border: 1px solid rgba(96, 165, 250, .55);
+  --sbtn-rad: 999px; --pill-rad: 999px; --side-rad: 14px;
+  --other-img: var(--cell-img); --other-col: var(--cell-col); --other-border: var(--cell-border);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font); font-size: var(--f-md); color: var(--body-color); min-height: 100vh;
+  background-image: var(--page-img); background-color: var(--page-col); overflow-x: hidden;
+}
+html { overflow-x: hidden; }
+button, input, select, textarea { font-family: inherit; }
+button { cursor: pointer; }
+[hidden] { display: none !important; }

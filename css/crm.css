@@ -1,0 +1,113 @@
+/* Telas centralizadas: Controle Comercial (pacientes & leads) e Despesas pessoais. */
+body.crm-mode .container, body.personal-finance-mode .container { display: block; }
+body.crm-mode .sidebarCol { width: min(1156px, 100%); margin: 0 auto; }
+body.personal-finance-mode .sidebarCol { width: min(1145px, 100%); margin: 0 auto; }
+#crmPageCard, #personalFinancePageCard { margin-top: 0 !important; }
+#personalFinancePageCard { border-radius: 22px; }
+#personalFinancePageCard .sectionHead { padding: 18px 22px; } #personalFinancePageCard .padded { padding: 18px 22px; }
+
+.crmCreateBtn { gap: 7px; padding: 0 15px; border-width: 2px; }
+.crmCreateBtn:not(.primary) { box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .06), 0 8px 18px rgba(0, 0, 0, .18); }
+.crmHero { display: flex; flex-direction: column; gap: 14px; }
+.crmPanel { padding: 14px; border: 1px solid var(--ui-border); border-radius: var(--radius); background: var(--ui-panel-bg); color: var(--ui-text); box-shadow: 0 14px 36px rgba(0, 0, 0, .18); }
+.crmTitle { font-size: clamp(16px, 1.6vw, 26px); font-weight: 1000; letter-spacing: .2px; color: var(--ui-text); }
+.crmSub { margin-top: 6px; font-size: 12px; line-height: 1.6; color: var(--ui-muted); }
+.crmCommercialBox { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+.crmCommercialMini, .crmStat { padding: 12px; border: 1px solid var(--line); border-radius: 16px; }
+.crmStat { background: linear-gradient(rgba(255, 255, 255, .1), rgba(255, 255, 255, .03)); color: var(--txt); }
+.crmCommercialMini { background: linear-gradient(135deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .03)); }
+.crmCommercialMini.bad { border-color: rgba(255, 93, 93, .45); background: linear-gradient(135deg, rgba(255, 93, 93, .16), rgba(255, 255, 255, .03)); }
+.crmCommercialMini.warn { border-color: rgba(255, 176, 32, .45); background: linear-gradient(135deg, rgba(255, 176, 32, .14), rgba(255, 255, 255, .03)); }
+.crmCommercialMini.good { border-color: rgba(57, 217, 138, .42); background: linear-gradient(135deg, rgba(57, 217, 138, .14), rgba(255, 255, 255, .03)); }
+.crmCommercialMini .k { font-size: 10px; font-weight: 1000; letter-spacing: .3px; text-transform: uppercase; color: var(--ui-muted); } .crmCommercialMini .v { margin-top: 6px; font-size: 20px; font-weight: 1000; color: var(--ui-text); }
+#crmScreenSubtitle { color: var(--txt); }
+.crmStats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+.crmStat .k { font-size: 10px; font-weight: 1000; letter-spacing: .3px; text-transform: uppercase; color: var(--ui-muted); } .crmStat .v { margin-top: 6px; font-size: 18px; font-weight: 1000; color: var(--ui-text); }
+
+.commercialAnalytics { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--ui-border); }
+.commercialAnalytics .themeSectionTitle { color: var(--ui-text); margin-bottom: 10px; }
+.commercialKpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+.commercialKpi { display: grid; gap: 4px; padding: 12px; border: 1px solid var(--ui-border); border-radius: 14px; background: color-mix(in srgb, var(--ui-text) 5%, transparent); color: var(--ui-text); }
+.commercialKpi span { font-size: 11px; font-weight: 950; color: var(--ui-muted); } .commercialKpi b { font-size: 18px; font-weight: 1000; }
+.commercialChartGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+.commercialChart { padding: 12px; border: 1px solid var(--ui-border); border-radius: 14px; background: color-mix(in srgb, var(--ui-text) 5%, transparent); color: var(--ui-text); } .commercialChart h4 { margin-bottom: 10px; font-size: 13px; }
+.commercialBarRow { display: grid; gap: 4px; margin: 9px 0; } .commercialBarLabel { display: flex; justify-content: space-between; gap: 10px; font-size: 11px; color: var(--ui-text); }
+.commercialBarTrack { height: 9px; border-radius: 999px; overflow: hidden; background: color-mix(in srgb, var(--ui-text) 14%, transparent); } .commercialBarTrack span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--acc), var(--good)); }
+
+.crmOverdueBox { display: none; margin-top: 14px; padding: 9px 10px; border: 1px solid var(--ui-border); border-radius: 18px; background: var(--ui-panel-bg); color: var(--ui-text); box-shadow: 0 12px 30px rgba(0, 0, 0, .16); }
+.crmOverdueBox.on { display: block; }
+.crmOverdueHead { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 10px; } .crmOverdueTitle { font-size: 13px; font-weight: 1000; } .crmOverdueSub { margin-top: 3px; font-size: 12px; line-height: 1.45; color: var(--ui-muted); }
+.crmOverdueCount { display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border: 1px solid rgba(255, 93, 93, .36); border-radius: 999px; font-weight: 1000; color: var(--txt); background: rgba(255, 93, 93, .22); }
+.crmOverdueList { display: grid; gap: 8px; }
+.crmOverdueItem { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px; padding: 8px; border: 1px solid rgba(255, 255, 255, .12); border-radius: 14px; background: rgba(0, 0, 0, .14); color: var(--txt); }
+.crmOverdueName { font-weight: 1000; } .crmOverdueMeta { margin-top: 3px; font-size: 12px; line-height: 1.45; color: var(--ui-muted); }
+.crmOverdueActions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; } .crmOverdueDays { display: flex; align-items: center; padding: 7px 10px; border: 1px solid rgba(255, 93, 93, .35); border-radius: 999px; background: rgba(255, 93, 93, .14); font-size: 12px; font-weight: 1000; color: var(--txt); }
+
+.crmDoctorReportHead { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+.crmDoctorReportTitle { font-size: 16px; font-weight: 1000; color: var(--ui-text); } .crmDoctorReportSub { margin-top: 3px; font-size: 12px; line-height: 1.45; color: var(--ui-muted); }
+.crmDoctorReport { margin-top: 12px; padding: 14px; border: 1px solid var(--ui-border); border-radius: 18px; background: var(--ui-panel-bg); box-shadow: 0 12px 30px rgba(0, 0, 0, .16); }
+.crmDoctorReportActions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.crmDoctorFilters { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-bottom: 12px; }
+.crmDoctorFilters.commercialCombinedFilters { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 10px; }
+.crmDoctorReportGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+.crmDoctorTile { padding: 12px; border: 1px solid var(--ui-border); border-radius: 16px; background: color-mix(in srgb, var(--ui-text) 5%, transparent); color: var(--txt); } .crmDoctorTile .doc { font-size: 13px; font-weight: 1000; } .crmDoctorTile .num { margin-top: 7px; font-size: 28px; font-weight: 1000; } .crmDoctorTile .mini { margin-top: 6px; font-size: 12px; line-height: 1.45; color: var(--ui-muted); }
+.crmDoctorTableWrap { margin-top: 12px; overflow: auto; border: 1px solid var(--line); border-radius: 16px; background: rgba(0, 0, 0, .08); }
+.crmDoctorTable { width: 100%; border-collapse: collapse; font-size: 12px; } .crmDoctorTable th, .crmDoctorTable td { padding: 9px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; } .crmDoctorTable th { font-size: 11px; text-transform: uppercase; color: var(--ui-muted); }
+.crmDoctorEmpty, .crmEmpty { padding: 14px; border: 1px dashed var(--line); border-radius: 14px; text-align: center; font-size: 12px; color: var(--ui-muted); }
+
+.crmFormPanel .themeSectionTitle, .crmSearchSection .themeSectionTitle { color: var(--ui-text); margin-bottom: 10px; }
+.crmFormGrid, .crmFormGrid3 { display: grid; } .crmFormGrid { grid-template-columns: 1fr 1fr; gap: var(--gap-sm); } .crmFormGrid3 { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+.crmFormGrid + .crmFormGrid, .crmFormGrid3 + .crmFormGrid { margin-top: 10px; }
+.crmCleanChoicePanel { padding: 13px 14px; border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(rgba(255, 255, 255, .08), rgba(255, 255, 255, .024)); color: var(--txt); }
+.crmCleanChoicePanel .lbl { color: var(--txt); }
+.crmCleanChecks, .crmInternetOptions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 9px; } .crmInternetOptions { display: none; padding-top: 10px; border-top: 1px solid var(--line); }
+.crmCleanCheck input { width: 16px; height: 16px; }
+.crmCleanCheck { display: inline-flex; align-items: center; gap: 7px; min-height: 38px; padding: 8px 11px; border: 1px solid var(--component-choice-border); border-radius: 999px; background: var(--component-choice-bg); color: var(--component-choice-text); font-size: 11px; font-weight: 950; line-height: 1.12; cursor: pointer; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .82); }
+.crmCleanCheck.is-checked { border-color: var(--component-choice-active-border); background: var(--component-choice-active-bg); color: var(--component-choice-active-text); }
+.crmTabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
+.crmTab { min-height: 48px; padding: 11px 14px; border: 1px solid var(--component-neutral-border); border-radius: 999px; background: var(--component-neutral-bg); color: var(--component-neutral-text); font-size: 14px; font-weight: 1000; line-height: 1.12; }
+body[data-crm-view="register"] .crmCreateBtn { display: none; }
+.crmToolbar { display: grid; grid-template-columns: 1fr 260px; gap: 10px; margin-top: 12px; }
+.crmToolbar + .crmDoctorFilters { margin-top: 10px; }
+.crmList { display: grid; gap: 10px; }
+.crmCard { border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(rgba(255, 255, 255, .09), rgba(255, 255, 255, .03)); color: var(--txt); box-shadow: 0 12px 30px rgba(0, 0, 0, .12); }
+.crmCard.crmDueLate { border-color: var(--crm-alert-strong); box-shadow: 0 0 0 2px var(--crm-alert-soft), 0 12px 30px rgba(0, 0, 0, .26); }
+.crmCardSummary { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, auto) auto; align-items: center; gap: 12px; padding: 13px 14px; list-style: none; cursor: pointer; } .crmCardSummary::-webkit-details-marker { display: none; }
+.crmName { font-size: 16px; font-weight: 1000; color: var(--ui-text); } .crmMeta { margin-top: 4px; font-size: 12px; line-height: 1.55; color: var(--ui-muted); }
+.crmBadgeRow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; justify-content: flex-end; }
+.crmBadge { display: flex; align-items: center; gap: 6px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255, 255, 255, .05); color: var(--txt); font-size: 11px; font-weight: 1000; white-space: nowrap; }
+.crmBadge.good { border-color: rgba(57, 217, 138, .42); background: rgba(57, 217, 138, .12); } .crmBadge.warn { border-color: rgba(255, 176, 32, .42); background: rgba(255, 176, 32, .12); }
+.crmBadge.bad { border-color: rgba(255, 93, 93, .42); background: rgba(255, 93, 93, .12); } .crmBadge.info { border-color: rgba(96, 165, 250, .42); background: rgba(96, 165, 250, .12); }
+.crmExpandHint { display: flex; align-items: center; padding: 10.08px 13.68px; border: 1px solid var(--component-neutral-border); border-radius: 999px; background: var(--component-neutral-bg); color: var(--component-neutral-text); font-size: 11px; font-weight: 1000; line-height: 1.12; }
+.crmExpandHint::before { content: "Expandir informações"; } .crmCard[open] .crmExpandHint::before { content: "Recolher informações"; }
+.crmCardDetails { padding: 0 14px 14px; border-top: 1px solid var(--ui-border); }
+.crmTimeline { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+.crmTimeBox { padding: 10px; border: 1px solid var(--ui-border); border-radius: 14px; background: color-mix(in srgb, var(--ui-text) 5%, transparent); } .crmTimeBox .k { font-size: 10.5px; font-weight: 950; color: var(--ui-muted); } .crmTimeBox .v { margin-top: 3px; font-size: 12px; font-weight: 1000; }
+.crmRepositionNote { margin-top: 8px; padding: 8px 10px; border: 1px dashed rgba(255, 176, 32, .6); border-radius: 12px; font-size: 12px; }
+.crmActions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; } .crmQuickDelay { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.agoraTimelineFull { margin-top: 12px; padding: 12px; border: 1px solid rgba(96, 165, 250, .24); border-radius: 16px; background: linear-gradient(rgba(96, 165, 250, .10), rgba(255, 255, 255, .025)); }
+.agoraTimelineTitle { margin-bottom: 8px; font-size: 12px; font-weight: 1000; letter-spacing: .3px; text-transform: uppercase; color: var(--ui-text); }
+.agoraTimelineList { display: grid; gap: 8px; } .agoraTimelineItem { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 10px; align-items: start; padding-left: 10px; border-left: 3px solid var(--acc); }
+.agoraTimelineDate { font-size: 11px; font-weight: 1000; color: var(--ui-muted); } .agoraTimelineText { font-size: 12px; font-weight: 900; line-height: 1.35; color: var(--ui-text); }
+
+/* ---------- despesas pessoais ---------- */
+.personalFinanceHero { display: flex; flex-direction: column; gap: 16px; }
+.personalFinanceDashboard { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+.personalFinanceKpi { padding: 16px; border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(rgba(255, 255, 255, .1), rgba(255, 255, 255, .03)); color: var(--txt); }
+.personalFinanceKpi.income { border-color: rgba(57, 217, 138, .38); }
+.personalFinanceKpi span { display: block; font-size: var(--f-md); font-weight: 850; color: var(--mut); } .personalFinanceKpi b { display: block; margin: 8px 0 4px; font-size: clamp(20px, 2vw, 32px); font-weight: 700; } .personalFinanceKpi small { display: block; font-size: 10.08px; font-weight: 850; line-height: 1.3; color: var(--mut); }
+.personalFinanceKpi.income b, .personalFinanceKpi.paid b { color: var(--good); } .personalFinanceKpi.pending b { color: var(--bad); }
+.personalFinancePanel { padding: 18px; border: 1px solid var(--line); border-radius: 22px; background: linear-gradient(rgba(255, 255, 255, .08), rgba(255, 255, 255, .03)); color: var(--txt); }
+.personalFinancePanel .themeSectionTitle { color: var(--txt); margin-bottom: 10px; }
+.personalFinanceForm { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; }
+.personalFinanceForm .lbl, .personalFinanceFilters .lbl { color: var(--txt); }
+.personalFinanceFilters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 13px; }
+.personalFinanceFilters > :nth-child(2) { grid-column: span 2; }
+.personalExpenseList { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+.personalExpenseItem { border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(rgba(255, 255, 255, .08), rgba(255, 255, 255, .024)); }
+.personalExpenseSummary { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 12px; padding: 14px 16px; list-style: none; cursor: pointer; } .personalExpenseSummary::-webkit-details-marker { display: none; }
+.personalExpenseSummary b { font-size: 15px; font-weight: 700; } .personalExpenseSummary strong { font-size: 16px; font-weight: 700; }
+.personalExpenseSummary small { display: block; margin-top: 3px; font-size: 10.08px; font-weight: 800; color: var(--mut); }
+.personalExpenseSummary em { padding: 7px 10px; border: 1px solid; border-radius: 999px; font-style: normal; font-size: var(--f-md); font-weight: 1000; }
+.personalExpenseSummary em.paid { color: var(--good); background: rgba(57, 217, 138, .12); border-color: rgba(57, 217, 138, .34); } .personalExpenseSummary em.pending { color: var(--bad); background: rgba(255, 93, 93, .12); border-color: rgba(255, 93, 93, .34); }
+.personalExpenseDetails { padding: 12px 14px 14px; border-top: 1px solid var(--line); } .personalExpenseActions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }

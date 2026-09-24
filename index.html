@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agenda de Plantões & Produtividade</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/themes.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/screens.css">
+<link rel="stylesheet" href="css/crm.css">
+<link rel="stylesheet" href="css/decor.css">
+</head>
+<body data-theme="senna_brasil" data-auth="off">
+
+<header class="hdr">
+  <div class="headerAligned">
+    <div class="compactBrand"><h1>Agenda de Plantões e Produtividade</h1></div>
+    <div class="toolbarCenter">
+      <div class="hambWrap" id="hambWrap">
+        <button class="hambBtn" id="hambBtn" type="button" aria-label="Menu" aria-expanded="false"><span class="hambLines"></span></button>
+        <div class="hambMenu" id="hambMenu" role="menu">
+          <button class="btn menuItem" id="btnAgendaScreen" type="button">Agenda</button>
+          <button class="btn menuItem" id="btnNewSurgery" type="button">Modo Cirurgião</button>
+          <button class="btn menuItem" id="btnPatientRegister" type="button">Cadastro de pacientes</button>
+          <button class="btn menuItem" id="btnCommercialControl" type="button">Controle Comercial</button>
+          <button class="btn menuItem" id="btnPersonalExpenses" type="button">Despesas pessoais</button>
+          <button class="btn menuItem" id="btnTheme" type="button">Tema</button>
+          <button class="btn menuItem" id="btnAdminCenter" type="button">Administração</button>
+          <button class="btn menuItem" id="btnAuditCenter" type="button">Auditoria</button>
+          <button class="btn menuItem" id="btnSaveNow" type="button">Salvar agora</button>
+          <button class="btn menuItem" id="btnUndo" type="button">Desfazer</button>
+          <button class="btn menuItem" id="btnToggleCalendarEvents" type="button">Ocultar eventos</button>
+          <button class="btn menuItem" id="btnLogin" type="button">Conta / Nuvem</button>
+          <button class="btn danger menuItem" id="btnReset" type="button">Zerar</button>
+        </div>
+      </div>
+      <input id="fileImport" type="file" accept="application/json" hidden>
+      <div class="primaryButtons">
+        <button class="btn primary" id="btnLoginTop" type="button">Cadastro/Login</button>
+        <button class="btn" id="btnPay" type="button">Regras de pagamento</button>
+        <button class="btn activeScreenBadge" id="activeScreenBadge" type="button" aria-live="polite">Agenda</button>
+      </div>
+    </div>
+    <div class="saveDock">
+      <div class="userBadge" id="userBadge" title="Usuário logado">
+        <div class="userName" id="userDisplayName">Não conectado</div>
+        <div class="userEmail" id="userDisplayEmail">Faça login para ver sua agenda</div>
+      </div>
+      <button class="btn danger" id="btnLogoutTop" type="button">Logout</button>
+      <div class="statusPill saved" id="savePill"><span class="statusDot"></span><span id="saveLabel">Salvo</span></div>
+    </div>
+  </div>
+</header>
+<div class="crmGlobalAlertStrip" id="crmGlobalAlertStrip" aria-live="polite"></div>
+
+<main class="container">
+  <aside class="sidebarCol">
+    <section class="card section">
+      <div class="sectionHead">
+        <div><div class="ttl">Produtividade mensal</div><div class="sub">Resumo do mês visível</div></div>
+        <button class="smallBtn" id="btnToggleSummary" type="button">Recolher</button>
+      </div>
+      <div class="padded" id="summaryBody">
+        <div class="summaryGrid">
+          <div class="sumBox"><div class="lbl">Ocorrências no mês</div><div class="val" id="sumCount">0</div></div>
+          <div class="sumBox"><div class="lbl">Total (mês)</div><div class="val" id="sumTotal">R$ 0,00</div></div>
+          <div class="sumBox"><div class="lbl">Horas (mês)</div><div class="val" id="sumHours">0h</div></div>
+          <div class="sumBox"><div class="lbl">Dia selecionado</div><div class="val" id="sumSel">—</div></div>
+        </div>
+        <div class="helper mt12">Resumo mensal e acompanhamento dos compromissos visíveis no calendário.</div>
+      </div>
+    </section>
+
+    <section class="card section" id="paymentsSection">
+      <div class="sectionHead">
+        <div><div class="ttl">Valores a receber</div><div class="sub">Resumo por instituição no mês visível</div></div>
+        <div class="headTools"><div class="sub"><b>Total:</b> <span id="paySum" class="goodText">R$ 0,00</span></div><button class="smallBtn" id="btnTogglePayments" type="button">Recolher</button></div>
+      </div>
+      <div class="padded" id="paymentsBody"><div class="payList" id="payList"></div></div>
+    </section>
+
+    <section class="card section" id="payablesSection">
+      <div class="sectionHead">
+        <div><div class="ttl">Contas a pagar</div><div class="sub">Eventos marcados como despesa no mês visível</div></div>
+        <div class="headTools end"><div class="sub"><b>Total:</b> <span id="payableSum" class="payableTotal">R$ 0,00</span></div>
+          <button class="smallBtn" id="btnToggleNetBalance" type="button">Abater no saldo</button><button class="smallBtn" id="btnTogglePayables" type="button">Recolher</button></div>
+      </div>
+      <div class="padded" id="payablesBody"><div class="helper" id="netBalanceBox" style="display:none;margin-bottom:10px"></div><div class="payList" id="payablesList"></div></div>
+    </section>
+
+    <section class="card section" id="surgerySection">
+      <div class="sectionHead">
+        <div><div class="ttl">Controle cirúrgico</div><div class="sub">Pacientes operados, convênios e recebimentos</div></div>
+        <div class="headTools"><button class="smallBtn primary" id="btnNewSurgeryRecord" type="button">Adicionar cirurgia</button><button class="smallBtn" id="btnToggleSurgeries" type="button">Recolher</button></div>
+      </div>
+      <div class="padded" id="surgeriesBody">
+        <div class="surgeonModeSearchPanel" id="surgeonModeSearchPanel">
+          <div class="themeSectionTitle">Busca de pacientes por período</div>
+          <div class="surgeryFilterBar">
+            <div><div class="lbl">Buscar paciente</div><input class="input" id="surgerySearch" placeholder="Nome, atendimento, hospital, convênio ou plano..."></div>
+            <div><div class="lbl">Data inicial</div><input class="input" id="surgeryPeriodFrom" type="date"></div>
+            <div><div class="lbl">Data final</div><input class="input" id="surgeryPeriodTo" type="date"></div>
+            <div><div class="lbl">Hospital</div><input class="input" id="surgeryHospitalFilter" list="dlHospitals" placeholder="Filtrar hospital"></div>
+            <div><div class="lbl">Categoria</div><select class="input" id="surgeryCategoryFilter"><option value="all">Todas</option><option value="convenio">Convênio</option><option value="particular">Particular</option></select></div>
+            <div><div class="lbl">Atuação</div><select class="input" id="surgeryRoleFilter"><option value="all">Todas</option><option value="principal">Cirurgião</option><option value="auxiliar">Auxiliar</option></select></div>
+            <div><div class="lbl">Status</div><select class="input" id="surgeryStatusFilter"><option value="all">Todos</option><option value="unpaid">Não Pago</option><option value="paid">Pago</option></select></div>
+            <div class="surgeryReportAction"><button class="mBtn" id="surgeryDownloadDoc" type="button">Baixar DOC</button><button class="mBtn" id="surgeryDownloadPdf" type="button">Baixar PDF</button></div>
+          </div>
+          <div class="helper" id="surgeryReportSummary"></div>
+          <div class="surgeryList" id="surgeryFullList"></div>
+        </div>
+        <div class="surgeryStats">
+          <div class="surgeryMini"><div class="k">Cirurgias no mês</div><div class="v" id="surgCountMonth">0</div></div>
+          <div class="surgeryMini"><div class="k">Pendentes</div><div class="v" id="surgPendingMonth">0</div></div>
+          <div class="surgeryMini"><div class="k">Recebido</div><div class="v" id="surgPaidValue">R$ 0,00</div></div>
+          <div class="surgeryMini"><div class="k">A receber</div><div class="v" id="surgUnpaidValue">R$ 0,00</div></div>
+        </div>
+        <div class="surgeryList" id="surgeryPreviewList"></div>
+      </div>
+    </section>
+
+    <section class="card section" id="crmPageCard">
+      <div class="sectionHead">
+        <div><div class="ttl" id="crmScreenTitle">Controle Comercial</div><div class="sub" id="crmScreenSubtitle">Dashboard comercial, acompanhamento e aquecimento de leads</div></div>
+        <div class="headTools"><button class="smallBtn primary crmCreateBtn" id="crmNewPatient" type="button"><span>✚</span> Novo paciente</button><button class="smallBtn crmCreateBtn" id="crmNewLead" type="button"><span>✚</span> Novo lead</button></div>
+      </div>
+      <div class="padded"><div class="crmHero">
+        <div class="crmPanel" id="crmMainPanel">
+          <div class="crmTitle">Central de relacionamento</div>
+          <div class="crmSub">Pacientes convertidos, pacotes de acompanhamento e carteira de leads não convertidos com alertas de recontato para a equipe comercial.</div>
+          <div class="crmCommercialBox" id="crmCommercialBox"></div>
+          <div class="crmStats">
+            <div class="crmStat"><div class="k">Pacientes ativos</div><div class="v" id="crmStatPatients">0</div></div>
+            <div class="crmStat"><div class="k">Leads abertos</div><div class="v" id="crmStatLeads">0</div></div>
+            <div class="crmStat"><div class="k">Recontatos hoje/atrasados</div><div class="v" id="crmStatDue">0</div></div>
+            <div class="crmStat"><div class="k">Valores pagos</div><div class="v" id="crmStatPaid">R$ 0,00</div></div>
+          </div>
+          <div id="crmAnalytics" class="commercialAnalytics"></div>
+          <div class="crmOverdueBox" id="crmOverdueBox"></div>
+        </div>
+
+        <div class="crmPanel" id="crmDoctorSection">
+          <div class="crmDoctorReportHead">
+            <div><div class="crmDoctorReportTitle">Controle por período · atendimento por médico</div><div class="crmDoctorReportSub">Filtre o período para saber quais e quantos pacientes/leads cada médico atendeu ou acompanhou.</div></div>
+            <button class="smallBtn" id="crmToggleDoctorReport" type="button">Recolher</button>
+          </div>
+          <div class="crmDoctorReport" id="crmDoctorReportBox">
+            <div class="crmDoctorReportActions">
+              <button class="smallBtn" id="crmDoctorPeriodThisMonth" type="button">Mês atual</button>
+              <button class="smallBtn" id="crmPrintReport" type="button">Imprimir</button>
+              <button class="smallBtn" id="crmDownloadReport" type="button">Baixar CSV</button>
+              <button class="smallBtn" id="crmDownloadDoc" type="button">Baixar DOC</button>
+              <button class="smallBtn" id="crmDownloadPdf" type="button">Baixar PDF</button>
+            </div>
+            <div class="crmDoctorFilters">
+              <div><div class="lbl">Data inicial</div><input class="input" id="crmDoctorPeriodFrom" type="date"></div>
+              <div><div class="lbl">Data final</div><input class="input" id="crmDoctorPeriodTo" type="date"></div>
+              <div><div class="lbl">Considerar data de</div><select class="input" id="crmDoctorPeriodBasis"><option value="lastConsultation">Última consulta</option><option value="firstConsultation">Primeira consulta</option><option value="lastContact">Último contato / atendimento</option><option value="firstContact">Primeiro contato</option><option value="packageStart">Início do pacote</option><option value="createdAt">Cadastro criado</option><option value="updatedAt">Última atualização</option></select></div>
+              <div><div class="lbl">Tipo</div><select class="input" id="crmDoctorPeriodType"><option value="all">Pacientes e leads</option><option value="patient">Somente pacientes</option><option value="lead">Somente leads</option></select></div>
+              <div class="span2"><div class="lbl">Médico</div><select class="input" id="crmDoctorPeriodDoctor"><option value="all">Todos os médicos</option></select></div>
+            </div>
+            <div id="crmDoctorPeriodReport"></div>
+          </div>
+        </div>
+
+        <div class="crmPanel crmFormPanel">
+          <div class="themeSectionTitle" id="crmFormTitle">Cadastrar paciente</div>
+          <div class="crmFormGrid">
+            <div><div class="lbl">Nome completo</div><input class="input" id="crmName" placeholder="Nome do paciente / lead"></div>
+            <div><div class="lbl">Telefone / WhatsApp</div><input class="input" id="crmPhone" placeholder="(00) 00000-0000"></div>
+          </div>
+          <div class="crmFormGrid3">
+            <div><div class="lbl">Data de nascimento</div><input class="input" id="crmBirthDate" type="date"></div>
+            <div><div class="lbl">CPF</div><input class="input" id="crmCpf" placeholder="000.000.000-00"></div>
+            <div><div class="lbl">E-mail</div><input class="input" id="crmEmail" type="email" placeholder="paciente@exemplo.com"></div>
+          </div>
+          <div class="crmFormGrid">
+            <div><div class="lbl">Endereço</div><input class="input" id="crmAddress" placeholder="Rua, número, bairro e cidade"></div>
+            <div><div class="lbl">Médico responsável</div><select class="input" id="crmDoctor"><option value="">Selecione o médico</option></select></div>
+          </div>
+          <div class="crmFormGrid">
+            <div class="crmCleanChoicePanel">
+              <div class="lbl">Origem</div>
+              <div class="crmCleanChecks">
+                <label class="crmCleanCheck"><input type="checkbox" id="crmOriginOrganic"> Orgânico</label>
+                <label class="crmCleanCheck"><input type="checkbox" id="crmOriginInternet"> Internet</label>
+              </div>
+              <div class="crmInternetOptions" id="crmInternetOptions">
+                <label class="crmCleanCheck"><input type="checkbox" data-crm-internet="Google"> Google</label>
+                <label class="crmCleanCheck"><input type="checkbox" data-crm-internet="Instagram"> Instagram</label>
+                <label class="crmCleanCheck"><input type="checkbox" data-crm-internet="IA"> IA</label>
+                <label class="crmCleanCheck"><input type="checkbox" data-crm-internet="YouTube"> YouTube</label>
+                <label class="crmCleanCheck"><input type="checkbox" data-crm-internet="Facebook"> Facebook</label>
+                <label class="crmCleanCheck"><input type="checkbox" data-crm-internet="TikTok"> TikTok</label>
+                <label class="crmCleanCheck"><input type="checkbox" data-crm-internet="Outros"> Outros</label>
+              </div>
+            </div>
+            <div class="crmCleanChoicePanel">
+              <div class="lbl">Interesse</div>
+              <div class="crmCleanChecks">
+                <label class="crmCleanCheck"><input type="checkbox" data-crm-interest="Consulta"> Consulta</label>
+                <label class="crmCleanCheck"><input type="checkbox" data-crm-interest="Procedimento"> Procedimento</label>
+                <label class="crmCleanCheck"><input type="checkbox" data-crm-interest="Consulta e procedimento"> Consulta e procedimento</label>
+              </div>
+            </div>
+          </div>
+          <div class="crmFormGrid"><div><div class="lbl">Status do paciente</div><select class="input" id="crmStatus"><option value="convertido">Paciente convertido</option><option value="nao_convertido">Paciente não convertido</option></select></div></div>
+          <div class="mFoot"><button class="mBtn ghost" id="crmClear" type="button">Limpar</button><button class="mBtn primary" id="crmSave" type="button">Salvar cadastro</button></div>
+        </div>
+
+        <div class="crmPanel" id="crmSearchSection">
+          <div class="themeSectionTitle">Pesquisa e lista de pacientes</div>
+          <div class="crmTabs">
+            <button class="crmTab active" id="crmTabPatients" type="button">Pacientes</button>
+            <button class="crmTab" id="crmTabLeads" type="button">Leads não convertidos</button>
+            <button class="crmTab" id="crmTabDue" type="button">Recontatos</button>
+          </div>
+          <div class="crmToolbar">
+            <div><div class="lbl">Pesquisar</div><input class="input" id="crmSearch" placeholder="Nome, telefone, origem, médico, procedimento..."></div>
+            <div><div class="lbl">Filtro rápido</div><select class="input" id="crmQuickFilter"><option value="all">Todos</option><option value="converted">Convertidos</option><option value="not_converted">Não convertidos</option><option value="due">Recontato hoje/atrasado</option></select></div>
+          </div>
+          <div class="crmDoctorFilters commercialCombinedFilters">
+            <div><div class="lbl">Médico</div><select class="input" id="crmListDoctor"><option value="all">Todos os médicos</option></select></div>
+            <div><div class="lbl">Período inicial</div><input class="input" id="crmListFrom" type="date"></div>
+            <div><div class="lbl">Período final</div><input class="input" id="crmListTo" type="date"></div>
+          </div>
+          <div class="crmList" id="crmList"></div>
+        </div>
+      </div></div>
+    </section>
+
+    <section class="card section" id="personalFinancePageCard">
+      <div class="sectionHead">
+        <div><div class="ttl">Despesas pessoais</div><div class="sub">Controle de finanças pessoais com faturamento vinculado da Agenda</div></div>
+        <button class="smallBtn" id="personalUseAgendaMonth" type="button">Usar mês da Agenda</button>
+      </div>
+      <div class="padded"><div class="personalFinanceHero">
+        <div class="personalFinanceDashboard" id="personalFinanceDashboard"></div>
+        <div class="personalFinancePanel">
+          <div class="themeSectionTitle">Cadastrar despesa pessoal</div>
+          <div class="personalFinanceForm">
+            <div><div class="lbl">Descrição</div><input class="input" id="personalExpenseDesc" placeholder="Ex: escola, cartão, mercado..."></div>
+            <div><div class="lbl">Categoria</div><input class="input" id="personalExpenseCategory" placeholder="Moradia, alimentação, transporte..."></div>
+            <div><div class="lbl">Vencimento</div><input class="input" id="personalExpenseDate" type="date"></div>
+            <div><div class="lbl">Valor</div><input class="input" id="personalExpenseValue" type="number" min="0" step="0.01" placeholder="0,00"></div>
+            <div><div class="lbl">Status</div><select class="input" id="personalExpenseStatus"><option value="pending">Pendente</option><option value="paid">Pago</option></select></div>
+            <div><div class="lbl">Recorrência</div><select class="input" id="personalExpenseRecurrence"><option value="none">Não repete</option><option value="monthly">Mensal</option></select></div>
+            <div class="span2"><div class="lbl">Observações</div><input class="input" id="personalExpenseNotes" placeholder="Anotações rápidas"></div>
+          </div>
+          <div class="mFoot"><button class="mBtn ghost" id="personalExpenseClear" type="button">Limpar</button><button class="mBtn primary" id="personalExpenseSave" type="button">Salvar despesa</button></div>
+        </div>
+        <div class="personalFinancePanel">
+          <div class="personalFinanceFilters">
+            <div><div class="lbl">Mês</div><input class="input" id="personalFinanceMonth" type="month"></div>
+            <div><div class="lbl">Pesquisar</div><input class="input" id="personalExpenseSearch" placeholder="Descrição, categoria ou observação"></div>
+            <div><div class="lbl">Status</div><select class="input" id="personalExpenseFilterStatus"><option value="all">Todas</option><option value="pending">Pendentes</option><option value="paid">Pagas</option></select></div>
+            <div><div class="lbl">Ordenar</div><select class="input" id="personalExpenseSort"><option value="manual">Ordem manual</option><option value="date_asc">Vencimento crescente</option></select></div>
+          </div>
+          <div class="personalExpenseList" id="personalExpenseList"></div>
+        </div>
+      </div></div>
+    </section>
+  </aside>
+
+  <section class="mainCol">
+    <section class="card section mainCalendarCard">
+      <div class="sectionHead"><button class="btn primary" id="btnNew" type="button"><span class="plusIcon" aria-hidden="true">+</span><span>Adicionar evento</span></button><div class="monthRow"><div class="month" id="monthLabel">—</div></div><button class="btn primary" id="btnDayHCal" type="button"><span class="plusIcon" aria-hidden="true">↕</span><span>Tamanho dos dias</span></button></div>
+      <div class="dowShell"><div></div><div class="dowRow" id="dowRow"></div><div></div></div>
+      <div class="calFrame">
+        <button class="sideOut" id="sidePrev" type="button" title="Mês anterior"><span class="arrow">‹</span><span class="sideLabel">Mês anterior</span><span class="sideMonth" id="prevMonthMini"></span></button>
+        <div class="grid" id="grid"></div>
+        <button class="sideOut" id="sideNext" type="button" title="Próximo mês"><span class="arrow">›</span><span class="sideLabel">Próximo mês</span><span class="sideMonth" id="nextMonthMini"></span></button>
+      </div>
+    </section>
+
+    <section class="card section" id="surgeonRetrospectCard">
+      <div class="sectionHead"><div><div class="ttl">Retrospecto cirúrgico geral</div><div class="sub">Pagamentos de todos os pacientes operados</div></div></div>
+      <div class="padded">
+        <div class="surgeryStats">
+          <div class="surgeryMini"><div class="k">Total pago</div><div class="v" id="surgAllPaidValue">R$ 0,00</div></div>
+          <div class="surgeryMini"><div class="k">Total não pago</div><div class="v" id="surgAllUnpaidValue">R$ 0,00</div></div>
+          <div class="surgeryMini"><div class="k">Pacientes pagos</div><div class="v" id="surgAllPaidCount">0</div></div>
+          <div class="surgeryMini"><div class="k">Pacientes pendentes</div><div class="v" id="surgAllUnpaidCount">0</div></div>
+        </div>
+        <div class="helper">Este retrospecto aparece abaixo do calendário no Modo Cirurgião.</div>
+      </div>
+    </section>
+  </section>
+</main>
+
+<!-- ============ Evento ============ -->
+<div class="ov" id="ovEvent">
+  <div class="modal">
+    <div class="mHead"><h3 id="evTitle">Evento</h3><button class="closeX" id="evClose" type="button">✕</button></div>
+    <div class="form">
+      <div><div class="lbl">Instituição / Local</div><input class="input" id="evName" list="dlHospitals" placeholder="Ex: Hospital Regional"></div>
+      <div class="row2">
+        <div><div class="lbl">Data</div><input class="input" id="evDate" type="date"></div>
+        <div><div class="lbl">Horário (opcional)</div><input class="input" id="evTime" placeholder="Ex: 07:00–19:00"></div>
+      </div>
+      <div class="row2">
+        <div><div class="lbl">Tipo de serviço</div>
+          <select class="input" id="evType"><option value="plantao">Plantão</option><option value="cirurgia">Cirurgia</option><option value="peq_cir">Pequenas Cirurgias</option><option value="ambulatorio">Ambulatório</option><option value="particular">Atendimento Particular</option></select></div>
+        <div><div class="lbl">Cor do evento</div><button class="smallBtn" id="btnPickColor" type="button" data-color="#3B82F6">Escolher cor</button></div>
+      </div>
+      <div class="row2">
+        <div><div class="lbl">Natureza financeira</div><select class="input" id="evFinanceKind"><option value="receivable">A receber</option><option value="payable">A pagar</option></select></div>
+        <div><div class="lbl">Identificação</div><div class="financeModeBadge" id="evFinanceBadge">A receber</div></div>
+      </div>
+      <div class="row3">
+        <div><div class="lbl">Valor por hora (R$/h)</div><input class="input" id="evRate" type="number" min="0" step="0.01"></div>
+        <div><div class="lbl">Horas</div><input class="input" id="evHours" type="number" min="0" step="0.25"></div>
+        <div><div class="lbl">Total (calculado)</div><input class="input" id="evTotal" readonly type="text"></div>
+      </div>
+      <div class="row2" id="evFullAmountRow" style="display:none">
+        <div><div class="lbl">Valor integral da conta a pagar (R$)</div><input class="input" id="evFullAmount" type="number" min="0" step="0.01" placeholder="Ex: 1250,00"></div>
+        <div class="helper helperFill">Para contas a pagar, você pode preencher o valor integral diretamente. O total usará este valor e não dependerá de horas × valor/hora.</div>
+      </div>
+      <div class="row2">
+        <div><div class="lbl">Recorrência</div><select class="input" id="evRec"><option value="none">Não repete</option><option value="weekly">Semanal</option><option value="biweekly">Quinzenal</option><option value="monthly">Mensal</option></select></div>
+        <div id="recEndRow" style="display:none"><div class="lbl">Repetir até (opcional)</div><input class="input" id="evEnd" type="date"></div>
+      </div>
+      <div class="helper"><b>Aplicação retroativa:</b> use quando esse evento já existia antes da data principal.</div>
+      <div class="row2">
+        <div><div class="lbl">Modo retroativo</div>
+          <select class="input" id="evRetroMode"><option value="none">Não aplicar</option><option value="single">Criar 1 data retroativa</option><option value="period">Criar período retroativo</option><option value="info">Apenas informar início retroativo</option></select></div>
+        <div id="retroSingleRow" style="display:none"><div class="lbl">Data retroativa única</div><input class="input" id="evRetroSingleDate" type="date"></div>
+      </div>
+      <div class="row2" id="retroPeriodRow" style="display:none">
+        <div><div class="lbl">Período retroativo: início</div><input class="input" id="evRetroStartDate" type="date"></div>
+        <div><div class="lbl">Período retroativo: fim</div><input class="input" id="evRetroEndDate" type="date"><div class="mFoot flat"><button class="smallBtn" id="btnRetroToday" type="button">Até hoje</button></div></div>
+      </div>
+      <div id="retroInfoRow" style="display:none"><div class="lbl">Data de início informativa</div><input class="input" id="evRetroInfoDate" type="date"></div>
+      <div><div class="lbl">Observação</div><textarea class="input" id="evNote" rows="3"></textarea></div>
+      <div class="helper"><b>Preview do chip:</b>
+        <div class="chipPreviewBox"><div class="chip" id="chipPreview" style="--chipBg:#3B82F6;--chipFg:#fff"><span class="chipMark"></span><span id="chipPreviewTxt">Exemplo</span></div></div></div>
+      <div class="mFoot">
+        <button class="mBtn primary" id="btnEventNewSurgery" type="button">Cadastrar cirurgia nesta data</button>
+        <button class="mBtn" id="btnCopySpecificDates" type="button">Copiar p/ datas específicas</button>
+        <button class="mBtn" id="btnDeleteSpecificDates" type="button">Excluir datas específicas</button>
+        <button class="mBtn danger" id="evDelete" type="button">Excluir</button>
+        <button class="mBtn ghost" id="evCancel" type="button">Cancelar</button>
+        <button class="mBtn primary" id="evSave" type="button">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ov" id="ovSpecificDates">
+  <div class="modal">
+    <div class="mHead"><h3 id="specificDatesTitle">Datas específicas</h3><button class="closeX" id="specificDatesClose" type="button">✕</button></div>
+    <div class="form">
+      <div class="helper">Informe uma data por linha, ou separadas por vírgula, no formato DD/MM/AAAA. Exemplo:<br>10/05/2026<br>14/05/2026, 21/05/2026</div>
+      <div class="row2">
+        <div><div class="lbl">Data inicial rápida (DD/MM/AAAA)</div><input class="input" id="specificStartDate" placeholder="DD/MM/AAAA"></div>
+        <div><div class="lbl">Data final rápida (DD/MM/AAAA)</div><input class="input" id="specificEndDate" placeholder="DD/MM/AAAA"></div>
+      </div>
+      <div class="mFoot flat">
+        <button class="smallBtn" id="btnSpecificFillRange" type="button">Gerar intervalo diário</button>
+        <button class="smallBtn" id="btnSpecificFillWeekly" type="button">Gerar semanal</button>
+        <button class="smallBtn" id="btnSpecificFillBiweekly" type="button">Gerar quinzenal</button>
+        <button class="smallBtn" id="btnSpecificClear" type="button">Limpar</button>
+      </div>
+      <div><div class="lbl">Datas selecionadas</div><textarea class="input" id="specificDatesText" rows="8" placeholder="10/05/2026&#10;14/05/2026&#10;21/05/2026"></textarea></div>
+      <div class="helper" id="specificDatesHint">As cópias serão criadas como eventos independentes. Na exclusão, as datas serão removidas do grupo vinculado ao evento atual.</div>
+      <div id="copyModeWrap" style="display:none"><div class="lbl">Modo de cópia</div>
+        <div class="row2 mt8">
+          <label class="helper radioRow"><input id="copyModeSingle" name="copyMode" type="radio" value="single" checked><span>Copiar como evento único</span></label>
+          <label class="helper radioRow"><input id="copyModeRecurring" name="copyMode" type="radio" value="recurring"><span>Copiar recorrência</span></label>
+        </div></div>
+      <div class="mFoot"><button class="mBtn ghost" id="specificDatesCancel" type="button">Cancelar</button><button class="mBtn primary" id="specificDatesConfirm" type="button">Confirmar</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="ov" id="ovScope">
+  <div class="modal">
+    <div class="mHead"><h3>Alterar recorrência</h3><button class="closeX" id="scopeClose" type="button">✕</button></div>
+    <div class="helper">Esse evento se repete. A alteração deve valer para:</div>
+    <div class="mFoot"><button class="mBtn scopeBtn" id="scopeSingle" type="button">Apenas este</button><button class="mBtn primary scopeBtn" id="scopeFuture" type="button">Este e futuros</button><button class="mBtn scopeBtn" id="scopeAll" type="button">Todos</button></div>
+  </div>
+</div>
+
+<div class="ov" id="ovDelScope">
+  <div class="modal">
+    <div class="mHead"><h3>Excluir recorrência</h3><button class="closeX" id="delScopeClose" type="button">✕</button></div>
+    <div class="helper">Esse evento se repete. A exclusão será aplicada à série atualmente aberta. Se for uma cópia recorrente, a fonte original não será apagada.</div>
+    <div class="mFoot"><button class="mBtn scopeBtn" id="delSingle" type="button">Apenas este</button><button class="mBtn danger scopeBtn" id="delFuture" type="button">Este e futuros</button><button class="mBtn danger scopeBtn" id="delAll" type="button">Todos</button></div>
+  </div>
+</div>
+
+<div class="ov" id="ovRetroDelScope">
+  <div class="modal">
+    <div class="mHead"><h3>Excluir retroativos</h3><button class="closeX" id="retroDelScopeClose" type="button">✕</button></div>
+    <div class="helper">Este item faz parte de um período retroativo gerado automaticamente. Você pode excluir apenas este evento, apagar todo o período retroativo de uma vez, ou apagar somente um intervalo específico de datas retroativas.</div>
+    <div class="row2 mt12">
+      <div><div class="lbl">Período específico: início (DD/MM/AAAA)</div><input class="input" id="retroDelStartDate" placeholder="DD/MM/AAAA"></div>
+      <div><div class="lbl">Período específico: fim (DD/MM/AAAA)</div><input class="input" id="retroDelEndDate" placeholder="DD/MM/AAAA"></div>
+    </div>
+    <div class="mFoot"><button class="mBtn scopeBtn" id="retroDelSingle" type="button">Apenas este</button><button class="mBtn danger scopeBtn" id="retroDelAll" type="button">Todo o período retroativo</button><button class="mBtn danger scopeBtn" id="retroDelRange" type="button">Período específico</button></div>
+  </div>
+</div>
+
+<div class="ov" id="ovColor">
+  <div class="modal">
+    <div class="mHead"><h3>Escolher cor</h3><button class="closeX" id="colorClose" type="button">✕</button></div>
+    <div class="row2 mt10"><div><div class="lbl">Seletor</div><input class="input" id="colorPicker" type="color" value="#3B82F6"></div><div><div class="lbl">Hex</div><input class="input" id="colorHex"></div></div>
+    <div class="colorGrid" id="colorGrid"></div>
+    <div class="mFoot"><button class="mBtn primary" id="colorOk" type="button">Fechar</button></div>
+  </div>
+</div>
+
+<div class="ov" id="ovDayH">
+  <div class="modal">
+    <div class="mHead"><h3>Tamanho dos dias</h3><button class="closeX" id="dayHClose" type="button">✕</button></div>
+    <div class="mt12"><div class="lbl">Altura de cada data: <span id="dayHVal">—</span></div><input class="input" id="dayHRange" type="range" min="105" max="220" step="1"></div>
+    <div class="mFoot"><button class="mBtn primary" id="dayHOk" type="button">Fechar</button></div>
+  </div>
+</div>
+
+<!-- ============ Regras ============ -->
+<div class="ov" id="ovPay">
+  <div class="modal">
+    <div class="mHead"><h3>Regras de pagamento</h3><button class="closeX" id="payClose" type="button">✕</button></div>
+    <div class="helper">Cadastre regras separadas para <b>valores a receber</b> e para <b>contas a pagar</b>. Cada regra usa instituição/local, data de pagamento/vencimento e período de competência.</div>
+    <div class="themeSectionTitle mt14">Regras de recebimento</div>
+    <div id="rulesHost" class="mt12"></div>
+    <div class="mFoot"><button class="mBtn" id="addRule" type="button">+ Adicionar regra de recebimento</button><button class="mBtn" id="btnBonusRules" type="button">Regras de bonificação</button></div>
+    <div class="themeSectionTitle badText mt18">Regras de contas a pagar</div>
+    <div id="payableRulesHost" class="mt12"></div>
+    <div class="mFoot"><button class="mBtn danger" id="addPayableRule" type="button">+ Adicionar regra de conta</button><button class="mBtn primary" id="saveRules" type="button">Salvar regras</button></div>
+  </div>
+</div>
+
+<div class="ov" id="ovBonusRules">
+  <div class="modal">
+    <div class="mHead"><h3>Regras de Bonificação</h3><button class="closeX" id="bonusRulesClose" type="button">✕</button></div>
+    <div class="helper">Defina acréscimos percentuais por faixa horária e restrinja por instituição, tipo ou data. O cálculo será aplicado automaticamente ao valor do evento.</div>
+    <div id="bonusRulesHost" class="mt12"></div>
+    <div class="mFoot"><button class="mBtn" id="addBonusRule" type="button">+ Adicionar Regra</button><button class="mBtn primary" id="saveBonusRules" type="button">Salvar Regras</button></div>
+  </div>
+</div>
+
+<!-- ============ Conta ============ -->
+<div class="ov" id="ovLogin">
+  <div class="modal">
+    <div class="mHead"><h3>Entrar</h3><button class="closeX" id="loginClose" type="button">✕</button></div>
+    <form class="form" id="authForm" autocomplete="on">
+      <div><div class="lbl">E-mail</div><input class="input" id="loginEmail" name="username" type="email" inputmode="email" placeholder="voce@exemplo.com" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"></div>
+      <div><div class="lbl">Senha</div>
+        <div class="passwordWrap"><input class="input" id="loginPassword" name="password" type="password" placeholder="senha" autocomplete="current-password" autocapitalize="off" spellcheck="false"><button class="passToggle" id="toggleLoginPassword" type="button" title="Mostrar/ocultar senha">👁</button></div></div>
+      <div class="mFoot"><button class="mBtn primary" id="btnSignIn" type="submit">Entrar</button><button class="mBtn" id="btnPasswordReset" type="button">Recuperar senha</button><button class="mBtn" id="btnOpenRegister" type="button">Criar cadastro</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="ov" id="ovRegister">
+  <div class="modal">
+    <div class="mHead"><h3>Criar cadastro</h3><button class="closeX" id="registerClose" type="button">✕</button></div>
+    <form class="form" id="registerForm" autocomplete="on">
+      <div><div class="lbl">Nome completo</div><input class="input" id="regName" name="name" placeholder="Seu nome" autocomplete="name"></div>
+      <div><div class="lbl">Data de nascimento</div><input class="input" id="regBirth" name="bday" type="date" autocomplete="bday"></div>
+      <div><div class="lbl">E-mail</div><input class="input" id="regEmail" name="username" type="email" inputmode="email" placeholder="voce@exemplo.com" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"></div>
+      <div><div class="lbl">Senha</div>
+        <div class="passwordWrap"><input class="input" id="regPassword" name="password" type="password" placeholder="mínimo 6 caracteres" autocomplete="new-password" autocapitalize="off" spellcheck="false"><button class="passToggle" id="toggleRegPassword" type="button" title="Mostrar/ocultar senha">👁</button></div></div>
+      <div><div class="lbl">Confirmar senha</div>
+        <div class="passwordWrap"><input class="input" id="regPasswordConfirm" name="new-password-confirm" type="password" placeholder="repita a senha" autocomplete="new-password" autocapitalize="off" spellcheck="false"><button class="passToggle" id="toggleRegPasswordConfirm" type="button" title="Mostrar/ocultar senha">👁</button></div></div>
+      <div class="mFoot"><button class="mBtn primary" id="btnCreateAccount" type="submit">Criar conta</button><button class="mBtn" id="btnBackToLogin" type="button">Voltar ao login</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="ov" id="ovAccount">
+  <div class="modal">
+    <div class="mHead"><h3>Minha conta</h3><button class="closeX" id="accountClose" type="button">✕</button></div>
+    <div class="form">
+      <div class="small" id="cloudUserStatus">Status: não conectado.</div>
+      <div class="accountPanel">
+        <div class="lbl">Nome exibido</div><input class="input" id="accountName" placeholder="Seu nome" autocomplete="name">
+        <div class="small mt8">E-mail conectado: <b id="accountEmail">—</b></div>
+      </div>
+      <div class="accountPanel">
+        <div class="lbl">Trocar senha</div><div class="small mt6">Por segurança, informe a senha atual antes de definir uma nova senha.</div>
+        <div class="row3 mt10">
+          <div><div class="lbl">Senha atual</div><input class="input" id="accountCurrentPassword" type="password" placeholder="senha atual" autocomplete="current-password" autocapitalize="off" spellcheck="false"></div>
+          <div><div class="lbl">Nova senha</div><input class="input" id="accountNewPassword" type="password" placeholder="mínimo 6 caracteres" autocomplete="new-password" autocapitalize="off" spellcheck="false"></div>
+          <div><div class="lbl">Confirmar nova senha</div><input class="input" id="accountNewPasswordConfirm" type="password" placeholder="repita a nova senha" autocomplete="new-password" autocapitalize="off" spellcheck="false"></div>
+        </div>
+      </div>
+      <div class="mFoot">
+        <button class="mBtn primary" id="btnUpdateProfile" type="button">Salvar nome</button>
+        <button class="mBtn" id="btnChangePassword" type="button">Trocar senha</button>
+        <button class="mBtn" id="btnBackupCenter" type="button">Backups, importar e exportar</button>
+        <button class="mBtn" id="btnSyncLocalToCloud" type="button">Enviar dados atuais para nuvem</button>
+        <button class="mBtn danger" id="btnSignOutAccount" type="button">Logout</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Preferências ============ -->
+<div class="ov" id="ovHideOptions">
+  <div class="modal">
+    <div class="mHead"><h3>Opções para ocultar no calendário</h3><button class="closeX" id="hideOptionsClose" type="button">✕</button></div>
+    <div class="form">
+      <div class="helper"><b>Importante:</b> estas opções escondem apenas os chips dentro do calendário. A barra lateral esquerda, valores a receber, contas a pagar e demais cálculos continuam aparecendo normalmente.</div>
+      <label class="hideOpt"><input type="checkbox" id="hideAllEvents"> Ocultar todos os eventos do calendário</label>
+      <div class="row2">
+        <label class="hideOpt"><input type="checkbox" id="hideReceivableEvents"> Ocultar somente eventos a receber</label>
+        <label class="hideOpt pay"><input type="checkbox" id="hidePayableEvents"> Ocultar somente contas a pagar</label>
+      </div>
+      <div><div class="lbl">Ocultar por tipo de serviço</div>
+        <div class="hideOptionsGrid">
+          <label class="hideOpt"><input type="checkbox" data-hide-type="plantao"> Plantões</label>
+          <label class="hideOpt"><input type="checkbox" data-hide-type="cirurgia"> Cirurgias</label>
+          <label class="hideOpt"><input type="checkbox" data-hide-type="peq_cir"> Pequenas cirurgias</label>
+          <label class="hideOpt"><input type="checkbox" data-hide-type="ambulatorio"> Ambulatório</label>
+          <label class="hideOpt"><input type="checkbox" data-hide-type="particular"> Atendimento particular</label>
+        </div></div>
+      <div class="mFoot"><button class="mBtn primary" id="btnApplyHideOptions" type="button">Aplicar</button><button class="mBtn" id="btnShowAllCalendarEvents" type="button">Mostrar tudo</button><button class="mBtn ghost" id="btnCancelHideOptions" type="button">Fechar</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="ov" id="ovThemeSelector">
+  <div class="modal themeStudioModal">
+    <div class="mHead"><div><h3>Estúdio de Tema</h3><div class="themeStudioSubtitle">Os temas prontos são fixos. Personalize cada área do sistema no seu "Meu tema".</div></div><button class="closeX" id="themeSelectorClose" type="button">✕</button></div>
+    <div class="form themeStudioForm">
+      <section class="themeStudioSection">
+        <div class="themeStudioSectionHead"><div><div class="themeSectionTitle">Temas prontos</div><div class="themeStudioHint">Escolha um tema. Os temas prontos não podem ser alterados; se você mexer em cores, cria-se o "Meu tema".</div></div></div>
+        <div class="themeGrid" id="themeGrid"></div>
+      </section>
+      <section class="themeStudioSection">
+        <div class="themeStudioSectionHead"><div><div class="themeSectionTitle">Personalização por áreas</div><div class="themeStudioHint" id="themeMineStatus"></div></div></div>
+        <div class="themeAreas" id="themeAreas"></div>
+      </section>
+      <div class="mFoot themeStudioFooter">
+        <button class="mBtn" id="btnDayH" type="button">Tamanho dos dias</button>
+        <button class="mBtn danger" id="btnResetMyTheme" type="button">Zerar meu tema</button>
+        <button class="mBtn ghost" id="themeSelectorCancel" type="button">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Cirurgia ============ -->
+<div class="ov" id="ovSurgeryCenter">
+  <div class="modal">
+    <div class="mHead"><h3>Adicionar Cirurgia</h3><button class="closeX" id="surgeryClose" type="button">✕</button></div>
+    <div class="form">
+      <div class="accountPanel">
+        <div class="row3">
+          <div><div class="lbl">Nome</div><input class="input" id="surgPatient" placeholder="Nome completo"></div>
+          <div><div class="lbl">Data de Nascimento</div><input class="input" id="surgBirthDate" type="date"></div>
+          <div><div class="lbl">Data do Procedimento</div><input class="input" id="surgDate" type="date"></div>
+        </div>
+        <div class="row3 mt10">
+          <div><div class="lbl">Hospital do Procedimento</div><input class="input" id="surgHospital" list="dlHospitals" placeholder="Hospital"></div>
+          <div><div class="lbl">Atendimento</div><input class="input" id="surgAttendance" placeholder="Número do atendimento"></div>
+          <div><div class="lbl">Categoria</div><select class="input" id="surgPaymentType"><option value="convenio">Convênio</option><option value="particular">Particular</option></select></div>
+        </div>
+        <div class="row2 mt10">
+          <div><div class="lbl">Convênio</div><input class="input" id="surgInsurance" list="dlInsurances" placeholder="Nome do convênio"></div>
+          <div><div class="lbl">Plano de Saúde</div><input class="input" id="surgHealthPlan" placeholder="Nome do plano"></div>
+        </div>
+        <div class="mt10"><div class="lbl">Detalhes do procedimento</div><textarea class="input" id="surgProcedures" rows="3" placeholder="Descrição livre do procedimento"></textarea></div>
+        <div class="row3 mt10">
+          <div><div class="lbl">Atuação</div><select class="input" id="surgRole"><option value="principal">Cirurgião</option><option value="auxiliar">Auxiliar</option></select></div>
+          <div><div class="lbl">Status</div><select class="input" id="surgPaymentStatus"><option value="unpaid">Não Pago</option><option value="paid">Pago</option></select></div>
+          <div><div class="lbl">Valor Previsto</div><input class="input" id="surgAmount" type="number" min="0" step="0.01" placeholder="0,00"></div>
+        </div>
+        <div class="row2 mt10">
+          <div><div class="lbl">Valor Pago</div><input class="input" id="surgReceivedAmount" type="number" min="0" step="0.01" placeholder="0,00"></div>
+          <div><div class="lbl">Data do Pagamento</div><input class="input" id="surgPaidDate" type="date"></div>
+        </div>
+        <div class="mt10"><div class="lbl">Observações Gerais</div><textarea class="input" id="surgNotes" rows="3" placeholder="Observações gerais"></textarea></div>
+        <div class="mFoot"><button class="mBtn ghost" id="surgClear" type="button">Limpar formulário</button><button class="mBtn primary" id="surgSave" type="button">Salvar cirurgia</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Backups ============ -->
+<div class="ov" id="ovBackupCenter">
+  <div class="modal">
+    <div class="mHead"><h3>Backups versionados · segurança dos dados</h3><button class="closeX" id="backupClose" type="button">✕</button></div>
+    <div class="form">
+      <div class="backupWarn">Backups salvos somente na nuvem, em Firestore, no caminho seguro do seu usuário. O arquivo JSON continua disponível como exportação manual para guardar fora do app. O calendário e os valores visíveis permanecem preservados.</div>
+      <div class="backupMetaGrid">
+        <div class="backupMetaBox"><div class="k">Eventos</div><div class="v" id="backupEventsCount">0</div></div>
+        <div class="backupMetaBox"><div class="k">Cirurgias</div><div class="v" id="backupSurgeriesCount">0</div></div>
+        <div class="backupMetaBox"><div class="k">Regras</div><div class="v" id="backupRulesCount">0</div></div>
+        <div class="backupMetaBox"><div class="k">Último backup</div><div class="v" id="backupLastAt">—</div></div>
+      </div>
+      <div class="backupToolbar">
+        <button class="mBtn primary" id="btnCreateBackupNow" type="button">Criar backup na nuvem</button>
+        <button class="mBtn" id="btnExportBackupPack" type="button">Baixar JSON</button>
+        <button class="mBtn" id="btnImport" type="button">Importar dados</button>
+        <button class="mBtn" id="btnExport" type="button">Exportar estado atual</button>
+        <button class="mBtn" id="btnRefreshBackups" type="button">Atualizar lista</button>
+      </div>
+      <div class="themeSectionTitle">Backups disponíveis</div>
+      <div class="backupList" id="backupList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Administração e auditoria ============ -->
+<div class="ov" id="ovAdminCenter">
+  <div class="modal">
+    <div class="mHead"><h3>Administração</h3><button class="closeX" id="adminClose" type="button">✕</button></div>
+    <div class="helper mb12">Gerencie médicos, hospitais e convênios sem editar o código.</div>
+    <div class="catGrid">
+      <div class="catBox"><div class="catBoxTitle">Médicos</div><div class="catBoxSub">Usado em filtros, pacientes/leads, cirurgias e relatórios.</div>
+        <input class="input" id="adminDoctorName" placeholder="Nome do médico"><div class="mFoot"><button class="mBtn primary" id="adminAddDoctor" type="button">Adicionar médico</button></div><div class="catList" id="adminDoctorsList"></div></div>
+      <div class="catBox"><div class="catBoxTitle">Hospitais</div><div class="catBoxSub">Disponível em cirurgias, filtros, agenda e regras financeiras.</div>
+        <input class="input" id="adminHospitalName" placeholder="Nome do hospital"><div class="mFoot"><button class="mBtn primary" id="adminAddHospital" type="button">Adicionar hospital</button></div><div class="catList" id="adminHospitalsList"></div></div>
+      <div class="catBox"><div class="catBoxTitle">Convênios</div><div class="catBoxSub">Disponível no cadastro cirúrgico, filtros e relatórios.</div>
+        <input class="input" id="adminInsuranceName" placeholder="Nome do convênio"><div class="mFoot"><button class="mBtn primary" id="adminAddInsurance" type="button">Adicionar convênio</button></div><div class="catList" id="adminInsurancesList"></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="ov" id="ovAuditCenter">
+  <div class="modal">
+    <div class="mHead"><h3>Auditoria</h3><button class="closeX" id="auditClose" type="button">✕</button></div>
+    <div class="auditTools">
+      <select class="input" id="auditFilterEntity"><option value="all">Todos os módulos</option><option value="crm">CRM / Leads / Pacientes</option><option value="finance">Financeiro / Agenda</option><option value="admin">Administração</option><option value="surgery">Cirurgias</option></select>
+      <input class="input" id="auditSearch" placeholder="Buscar por usuário, paciente, ação, médico...">
+      <button class="mBtn" id="auditClear" type="button">Limpar filtros</button>
+    </div>
+    <div id="auditSummary" class="helper mb12"></div>
+    <div class="auditTableWrap"><table class="auditTable"><thead><tr><th>Data/hora</th><th>Módulo</th><th>Ação</th><th>Registro</th><th>Usuário</th><th>Detalhes</th></tr></thead><tbody id="auditRows"></tbody></table></div>
+  </div>
+</div>
+
+<datalist id="dlHospitals"></datalist>
+<datalist id="dlInsurances"></datalist>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+<script src="js/util.js"></script>
+<script src="js/state.js"></script>
+<script src="js/cloud.js"></script>
+<script src="js/backup.js"></script>
+<script src="js/finance.js"></script>
+<script src="js/calendar.js"></script>
+<script src="js/panels.js"></script>
+<script src="js/surgery.js"></script>
+<script src="js/crm.js"></script>
+<script src="js/personal.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/reports.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/contrast.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
