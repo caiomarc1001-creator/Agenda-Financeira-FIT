@@ -66,3 +66,15 @@ html { overflow-x: hidden; }
 button, input, select, textarea { font-family: inherit; }
 button { cursor: pointer; }
 [hidden] { display: none !important; }
+
+/* ---------- iPhone / Safari: controles com o mesmo aspecto em todos os navegadores ----------
+   O Safari desenha campos, listas e botões com aparência própria (menores, centralizados, com sombra interna e setas),
+   o que desalinha os formulários. Aqui tiramos essa aparência e cada componente usa o próprio estilo. */
+input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]), select, textarea, button { -webkit-appearance: none; appearance: none; }
+button { font: inherit; text-align: center; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+input.input, select.input { min-height: calc(1.25em + 26px); }
+select.input {
+  padding-right: 38px; text-overflow: ellipsis; background-repeat: no-repeat; background-position: right 14px center; background-size: 12px 8px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23445' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+summary { list-style: none; } summary::-webkit-details-marker { display: none; }

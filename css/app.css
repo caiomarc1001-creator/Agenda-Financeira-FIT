@@ -27,10 +27,11 @@
 
 /* ---------- cabeçalho ---------- */
 .hdr {
-  position: sticky; top: 0; z-index: 5000; display: flex; padding: 12px clamp(8px, 1.1vw, 16px); min-height: 112px;
+  position: relative; z-index: 5000; display: flex; padding: 12px clamp(8px, 1.1vw, 16px); min-height: 112px; max-width: 100%;
   background-image: var(--hdr-img); background-color: var(--hdr-col); border-bottom: var(--hdr-border); box-shadow: var(--hdr-shadow); color: var(--hdrtxt-color);
 }
 .headerAligned { position: relative; z-index: 5; width: 100%; display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr) auto; align-items: stretch; align-content: center; gap: 14px; min-height: 88px; }
+.headerAligned > * { min-width: 0; } /* o Safari não encolhe itens de grade sem isto e o cabeçalho passa da tela */
 .compactBrand { display: flex; align-items: center; padding-left: var(--brand-padl); min-width: 0; }
 .compactBrand h1 { font-size: clamp(15px, 1.38vw, 22px); font-weight: 1000; line-height: 1.08; color: var(--ui-header-text); text-shadow: 0 1px 2px rgba(0, 0, 0, .24); }
 .toolbarCenter { position: relative; min-width: 0; display: flex; align-items: center; justify-content: flex-start; gap: 8px; padding: 2px 2px 5px; }
@@ -224,6 +225,8 @@ body[data-crm-view="dashboard"] .crmFormPanel, body[data-crm-view="register"] #c
   :root { --ui-fs: 12px; }
   .primaryButtons .btn { min-height: 44px; padding: 0 15px; }
   .hambBtn { width: 40px; height: 40px; flex: none; }
+  .toolbarCenter { width: 100%; max-width: 100%; -webkit-overflow-scrolling: touch; } .primaryButtons .btn { flex: none; }
+  .saveDock { flex: none; align-self: center; } .compactBrand { align-self: center; }
   .statusPill { min-width: 118px; padding: 8px 10px; font-size: 11px; }
   .userBadge { display: none; }
   .container { grid-template-columns: minmax(0, 1fr); padding: 8px clamp(5px, 1.3vw, 10px) 22px; }

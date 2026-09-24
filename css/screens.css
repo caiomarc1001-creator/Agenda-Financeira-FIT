@@ -3,7 +3,7 @@
 /* ---------- modais ---------- */
 .ov {
   position: fixed; inset: 0; z-index: 50000; display: none; align-items: flex-start; justify-content: center; overflow: auto; overscroll-behavior: contain;
-  padding: calc(96px + env(safe-area-inset-top)) 14px calc(32px + env(safe-area-inset-bottom)); background: rgba(0, 0, 0, .72); backdrop-filter: blur(12px);
+  padding: calc(96px + env(safe-area-inset-top)) 14px calc(32px + env(safe-area-inset-bottom)); background: rgba(0, 0, 0, .72); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
 }
 .ov.open { display: flex; }
 .modal {
@@ -28,11 +28,16 @@
   font-size: 14px; font-weight: 900; outline: none;
 }
 .input::placeholder { color: var(--ui-placeholder); opacity: 1; }
+/* Campos de data/hora: no iPhone (Safari) usam aparência própria, menores e centralizados; aqui ficam iguais aos demais campos */
+input.input[type=date], input.input[type=time], input.input[type=month], input.input[type=datetime-local] {
+  -webkit-appearance: none; appearance: none; display: block; min-width: 0; min-height: calc(1.25em + 26px); line-height: 1.25; text-align: left;
+}
+input.input[type=date]::-webkit-date-and-time-value, input.input[type=time]::-webkit-date-and-time-value, input.input[type=month]::-webkit-date-and-time-value { text-align: left; min-height: 1.25em; margin: 0; }
 .input:focus { border-color: var(--acc); box-shadow: 0 0 0 3px color-mix(in srgb, var(--acc) 22%, transparent); }
 textarea.input { resize: vertical; min-height: 80px; }
 .modal .helper, .modal .cloudHint {
   margin-top: 0; display: block; padding: 10px; border-radius: 14px; font-size: 12px; line-height: 1.55; border: 1px dashed color-mix(in srgb, var(--ui-text) 18%, transparent);
-  background: color-mix(in srgb, var(--ui-field-bg) 54%, transparent); color: var(--ui-muted); backdrop-filter: blur(8px);
+  background: color-mix(in srgb, var(--ui-field-bg) 54%, transparent); color: var(--ui-muted); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
 }
 #ovEvent .helper { display: flex; align-items: center; }
 .helperFill { display: flex; align-items: center; height: 100%; }
@@ -119,7 +124,7 @@ textarea.input { resize: vertical; min-height: 80px; }
 #ovLogin, #ovRegister { padding-top: calc(28px + env(safe-area-inset-top)); }
 .ov.parked { visibility: hidden; }
 /* Tamanho dos dias: janela pequena embaixo, sem escurecer nem desfocar o fundo, para ver o ajuste ao vivo */
-#ovDayH { background: transparent; backdrop-filter: none; align-items: flex-end; padding-bottom: calc(24px + env(safe-area-inset-bottom)); pointer-events: none; }
+#ovDayH { background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; align-items: flex-end; padding-bottom: calc(24px + env(safe-area-inset-bottom)); pointer-events: none; }
 #ovDayH .modal { width: min(440px, 100%); pointer-events: auto; box-shadow: 0 18px 60px rgba(0, 0, 0, .55); }
 input[type=checkbox], input[type=radio] { accent-color: var(--acc); }
 .hideOpt input { width: 18px; height: 18px; }
