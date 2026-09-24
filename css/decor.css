@@ -60,3 +60,6 @@ body[data-theme="senna_brasil"] .hdr::before {
 .themePreview_emerald::after { content: "◆"; left: 30px; top: 22px; font-size: 54px; font-weight: 400; color: #34d399; }
 .themePreview_custom { background: linear-gradient(135deg, #22304f, #3b82f6 50%, #8b5cf6); }
 .themePreview_custom::after { content: "CUSTOM"; left: 18px; top: 69px; font-size: 23px; letter-spacing: .08em; color: #fff; }
+
+/* Celular e tablet: o cabeçalho é mais alto, então deixa espaço para os botões ficarem acima da faixa do Senna */
+@media (max-width: 1100px) { body[data-theme="senna_brasil"] .hdr { padding-bottom: 36px; } }

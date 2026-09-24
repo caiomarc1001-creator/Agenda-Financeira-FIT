@@ -46,6 +46,7 @@ body[data-auth="on"] .mFoot.authOnly { display: flex; }
 
 .hambWrap { position: relative; z-index: 300; }
 .hambBtn {
+  touch-action: manipulation;
   width: clamp(38px, 3.2vw, 46px); height: clamp(38px, 3.2vw, 46px); border-radius: 14px; display: flex; align-items: center; justify-content: center; padding: 0;
   background-image: var(--hamb-img); background-color: var(--hamb-col); border: var(--hamb-border); box-shadow: var(--hamb-shadow); color: var(--txt);
 }
@@ -55,7 +56,7 @@ body[data-auth="on"] .mFoot.authOnly { display: flex; }
   display: none; position: fixed; z-index: 9000; flex-direction: column; gap: 8px; padding: 12px; max-height: calc(100dvh - 100px); overflow-y: auto;
   border: 2px solid var(--ui-menu-border); border-radius: 18px; background: var(--ui-menu-bg); box-shadow: 0 28px 80px rgba(0, 0, 0, .44);
 }
-.hambWrap.open .hambMenu { display: flex; }
+.hambMenu.open { display: flex; }
 .hambMenu .menuItem { width: 100%; min-height: 46px; padding: 9px 14px; font-size: 11px; font-weight: 1000; line-height: 1.12; box-shadow: var(--btn-shadow); }
 .hambMenu .menuItem.modeActive { border-color: var(--component-active-border); background: var(--component-active-bg); color: var(--component-active-text); }
 
@@ -232,6 +233,7 @@ body[data-crm-view="dashboard"] .crmFormPanel, body[data-crm-view="register"] #c
   .container { grid-template-columns: minmax(0, 1fr); padding: 8px clamp(5px, 1.3vw, 10px) 22px; }
   .mainCol { order: 1; } .sidebarCol { order: 2; }
   body.surgeon-mode .container { grid-template-columns: minmax(0, 1fr); }
+  body.surgeon-mode .surgeryFilterBar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .sectionHead .ttl { font-size: 15px; } .sectionHead .sub { font-size: 11px; } .card { border-radius: 16px; } .surgeryStats { grid-template-columns: 1fr; }
   .crmAlertTile { width: clamp(190px, 27vw, 250px); }
   .sideOut { display: none; }
@@ -240,7 +242,6 @@ body[data-crm-view="dashboard"] .crmFormPanel, body[data-crm-view="register"] #c
   .dow { font-size: 12px; padding: 9px 0; }
   .month { font-size: clamp(18px, calc(11.76px + 1.333vw), 32px); min-width: min(330px, 80%); }
   .crmGlobalAlertStrip { width: calc(100% - 20px); }
-  body.crm-mode .sidebarCol, body.personal-finance-mode .sidebarCol { width: 100%; }
 }
 @media (max-width: 700px) {
   .statusPill { display: none; }
@@ -260,7 +261,5 @@ body[data-crm-view="dashboard"] .crmFormPanel, body[data-crm-view="register"] #c
   .crmGlobalAlertStrip { flex-direction: column; align-items: stretch; } .crmAlertTile { width: 100%; min-height: 38px; align-items: center; }
   .dow { font-size: 10px; padding: 8px 2px; }
   .sumBox .val { font-size: 17px; }
-  .row2, .row3 { grid-template-columns: 1fr; }
-  .surgeryFilterBar { grid-template-columns: 1fr; }
-  .ov { padding-left: 8px; padding-right: 8px; }
+  .surgeryFilterBar, body.surgeon-mode .surgeryFilterBar { grid-template-columns: 1fr; }
 }

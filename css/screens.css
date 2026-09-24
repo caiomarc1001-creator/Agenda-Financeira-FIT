@@ -142,21 +142,14 @@ input[type=checkbox], input[type=radio] { accent-color: var(--acc); }
 .passToggle { right: 12px; width: 38px; height: 38px; border: 1px solid color-mix(in srgb, var(--ui-field-text) 22%, transparent); border-radius: 50%; background: linear-gradient(rgba(255, 255, 255, .98), rgba(241, 245, 249, .92)); color: #071225; box-shadow: 0 8px 18px rgba(0, 0, 0, .18); display: flex; align-items: center; justify-content: center; font-size: 15px; }
 .passwordWrap .input { padding-right: 62px; }
 
-/* ---------- celular: as janelas ocupam a tela e os campos ficam em uma coluna ----------
-   (fica aqui, depois das regras base das janelas; no app.css elas seriam sobrescritas) */
+/* ---------- celular: as janelas ocupam a tela e os campos ficam em uma coluna ---------- */
 @media (max-width: 700px) {
   .ov, #ovLogin, #ovRegister { padding: calc(8px + env(safe-area-inset-top)) 8px calc(8px + env(safe-area-inset-bottom)); }
   .modal { --modal-pad: 12px; width: 100%; max-height: calc(100dvh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
   .mHead h3 { font-size: 16px; }
-  .row2, .row3, .surgeryFilterBar, .catRow { grid-template-columns: minmax(0, 1fr); }
+  .row2, .row3, .catRow, .catGrid, .auditTools { grid-template-columns: minmax(0, 1fr); }
+  .backupMetaGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .colorGrid { grid-template-columns: repeat(5, 1fr); }
   .input { font-size: 16px; } /* abaixo de 16px o iPhone dá zoom automático ao tocar num campo */
   .mFoot .mBtn { flex: 1 1 140px; }
 }
-@media (max-width: 700px) {
-  .colorGrid { grid-template-columns: repeat(5, 1fr); }
-  .backupMetaGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .catGrid, .auditTools { grid-template-columns: minmax(0, 1fr); }
-}
-/* Modo Cirurgião: a regra do computador tem mais peso que a genérica, então repetimos aqui */
-@media (max-width: 1100px) { body.surgeon-mode .surgeryFilterBar { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 700px) { body.surgeon-mode .surgeryFilterBar { grid-template-columns: minmax(0, 1fr); } }
