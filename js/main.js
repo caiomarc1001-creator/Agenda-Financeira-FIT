@@ -67,7 +67,7 @@ function positionMenu() {
   menu.style.top = Math.max(12, Math.min(r.bottom + 10, innerHeight - 96)) + 'px';
 }
 function setMenu(open) {
-  $('hambWrap').classList.toggle('open', open);
+  $('hambWrap').classList.toggle('open', open); $('hambMenu').classList.toggle('open', open);
   $('hambBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
   if (open) positionMenu();
 }
@@ -84,9 +84,10 @@ function openRegister() {
 
 /* ---------- eventos ---------- */
 function bindEvents() {
+  document.body.appendChild($('hambMenu')); // o menu fica direto no <body>: no iPhone um menu dentro da barra de rolagem do cabeçalho pode ficar cortado ou sem toque
   // menu
   on('hambBtn', 'click', () => setMenu(!$('hambWrap').classList.contains('open')));
-  document.addEventListener('click', e => { if (!e.target.closest('#hambWrap')) setMenu(false); });
+  document.addEventListener('click', e => { if (!e.target.closest('#hambWrap, #hambMenu')) setMenu(false); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
   addEventListener('resize', () => { if ($('hambWrap').classList.contains('open')) positionMenu(); });
   $$('#hambMenu .menuItem').forEach(b => b.addEventListener('click', () => setTimeout(() => setMenu(false), 120)));
