@@ -137,7 +137,7 @@ function applyTheme() {
   AutoContrast.schedule();
 }
 
-const CELL_MIN = 105; // menor tamanho da data: cabem 3 eventos inteiros com fonte legível
+const CELL_MIN = 100; // menor tamanho da data: cabem 3 eventos inteiros
 function applyCellHeight() {
   const h = state.cellH = Math.max(CELL_MIN, Math.min(220, Number(state.cellH) || 128));
   root.style.setProperty('--cellH', `${h}px`);
