@@ -249,7 +249,9 @@ body[data-crm-view="dashboard"] .crmFormPanel, body[data-crm-view="register"] #c
   :root { --ui-fs: 11.5px; }
   .primaryButtons { display: flex; width: auto; }
   .primaryButtons .btn { min-height: 42px; padding: 0 12px; }
-  .day { --dh: calc(var(--cellH) * .68 + 34px); height: var(--dh); padding: 5px; }
+  /* celular: datas compactas (cerca de 51 x 68 px) com 3 eventos pequenos empilhados */
+  .day { --dh: calc(var(--cellH) * .68); --chip-h: clamp(12px, min(calc((var(--dh) - 25px) / 3.52), 22cqw), 44px); height: var(--dh); padding: 4px; gap: 3px; }
+  .chip { font-size: clamp(8px, calc(var(--chip-h) * .7), 10px); }
   .grid, .dowRow { gap: 3px; } .dowShell { padding: 6px 2px 0; } .calFrame { padding: 6px 2px; }
   .chipMark { display: none; }
   .month { padding: 4px 12px; min-width: 100%; font-size: 18px; }
