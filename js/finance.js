@@ -77,7 +77,7 @@ function occursOn(master, dateISO) {
   const diff = Math.round((d - start) / 86400000);
   if (rec === 'weekly') return diff % 7 === 0;
   if (rec === 'biweekly') return diff % 14 === 0;
-  if (rec === 'monthly') return d.getDate() === start.getDate();
+  if (rec === 'monthly') return d.getDate() === Math.min(start.getDate(), new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate()); // dia 29-31 em mês curto cai no último dia
   return false;
 }
 
