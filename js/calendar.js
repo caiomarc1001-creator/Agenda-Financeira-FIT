@@ -146,10 +146,12 @@ const defaultEvent = date => ({
   rec: 'none', endDate: '', exceptions: [], isOverride: false, seriesId: '', dateISO: '', retroMode: 'none', retroSingleDate: '', retroStartDate: '', retroEndDate: '', retroInfoDate: ''
 });
 
-function fillEventForm(m, title) {
+/* lockDate: ao editar só uma ocorrência (ou um override) a data é a da ocorrência e não pode ser trocada aqui. */
+function fillEventForm(m, title, lockDate = false) {
   $('evTitle').textContent = title || 'Evento';
   $('evName').value = m.name || '';
   $('evDate').value = m.startDate || todayISO();
+  $('evDate').disabled = lockDate;
   $('evTime').value = m.time || '';
   $('evType').value = m.type || 'plantao';
   $('btnPickColor').dataset.color = hexNorm(m.color || '#3B82F6');
@@ -179,6 +181,7 @@ function readEventForm() {
     retroStartDate: $('evRetroStartDate').value || '', retroEndDate: $('evRetroEndDate').value || '', retroInfoDate: $('evRetroInfoDate').value || ''
   });
   m.payableFullAmount = m.fullAmount;
+  delete m._virtual; delete m._masterId; delete m._instanceDate; // marcas de ocorrência virtual não podem ir para o evento gravado
   return m;
 }
 
@@ -242,7 +245,7 @@ function openEventFromChip(e, day) {
   clearScope();
   Modal.model = clone(e);
   if (e.isOverride) Modal.model.startDate = e.dateISO || day;
-  fillEventForm(Modal.model, e.isOverride ? 'Editar (override)' : 'Editar evento');
+  fillEventForm(Modal.model, e.isOverride ? 'Editar (override)' : 'Editar evento', !!e.isOverride);
   $('evDelete').style.display = '';
   openModal('ovEvent');
 }
@@ -253,10 +256,12 @@ function chooseScope(scope) {
   closeModal('ovScope');
   const labels = { single: 'apenas este evento', future: 'este evento e os futuros', all: 'todos os eventos da série' };
   const base = clone(Scope.pendingModel || Modal.model || defaultEvent(Scope.instanceDate));
+  const master = state.events.find(e => e.id === Scope.masterId);
   base.startDate = base.dateISO = Scope.instanceDate;
   if (scope === 'single') { base.rec = 'none'; base.endDate = ''; }
+  if (scope === 'all' && master) { base.startDate = master.startDate; base.dateISO = ''; } // "todos": mantém o início da série, senão as ocorrências anteriores sumiriam
   Modal.model = base;
-  fillEventForm(base, `Editar (série • ${labels[scope]})`);
+  fillEventForm(base, `Editar (série • ${labels[scope]})`, scope === 'single');
   $('evDelete').style.display = '';
   openModal('ovEvent');
 }
@@ -403,7 +408,7 @@ function saveEvent() {
       master.endDate = addDays(date, -1);
       state.events[idx] = master;
       state.events = state.events.filter(e => !(e.isOverride && e.seriesId === master.id && (e.dateISO || e.startDate) >= date) && !isRetroChildOf(e, master.id));
-      const created = { ...clone(model), id: uid(), startDate: date, isOverride: false, seriesId: '', dateISO: '', exceptions: [] };
+      const created = { ...clone(model), id: uid(), isOverride: false, seriesId: '', dateISO: '', exceptions: [] }; // vale a data do formulário (pode ter sido alterada)
       state.events.push(created, ...retroSingles(created));
     } else {
       const merged = { ...clone(model), id: master.id, isOverride: false, seriesId: '', dateISO: '', exceptions: master.exceptions || [] };
@@ -411,7 +416,7 @@ function saveEvent() {
       state.events = state.events.filter(e => !isRetroChildOf(e, master.id));
       state.events.push(...retroSingles(merged));
     }
-    state.selDate = model.startDate;
+    state.selDate = Scope.mode === 'all' ? date : model.startDate;
     clearScope();
   } else {
     if (model.isOverride) upsertEvent(model);
