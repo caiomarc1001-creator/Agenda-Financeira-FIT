@@ -126,6 +126,14 @@ body[data-crm-view="register"] .crmCreateBtn { display: none; }
   .crmDoctorFilters, .crmDoctorFilters.commercialCombinedFilters { grid-template-columns: minmax(0, 1fr); }
   .commercialKpis, .crmTimeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .crmTabs { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+  /* cartões de pacientes/leads e recontatos: tudo empilhado, selos podem quebrar linha */
+  .crmCardSummary { grid-template-columns: minmax(0, 1fr) auto; gap: 8px 10px; }
+  .crmCardSummary > :first-child { grid-column: 1 / -1; }
+  .crmBadgeRow { justify-content: flex-start; margin-top: 0; grid-column: 1 / 2; }
+  .crmBadge { white-space: normal; max-width: 100%; }
+  .crmOverdueItem { grid-template-columns: minmax(0, 1fr); }
+  .crmOverdueActions { justify-content: flex-start; }
+  .crmOverdueName, .crmOverdueMeta { overflow-wrap: anywhere; }
   .span2, .personalFinanceFilters > :nth-child(2) { grid-column: 1 / -1; } /* "ocupar 2 colunas" cria coluna extra numa grade de 1 coluna */
 }
 @media (max-width: 400px) {
