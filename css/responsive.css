@@ -1,0 +1,119 @@
+/* ==========================================================================
+   RESPONSIVO — tudo o que muda em tablet e celular fica AQUI, e só aqui.
+   Este arquivo é o último a carregar, então estas regras sempre valem sobre as de desktop.
+
+   Pontos de quebra:  1100px = tablet e abaixo  ·  700px = celular  ·  400px = celular estreito
+
+   Como mexer:
+   - Mudou o desktop de um componente? Ajuste no arquivo dele (app.css, screens.css, crm.css).
+   - Mudou como ele fica no celular/tablet? Ajuste só aqui, na seção da área correspondente.
+   - Não crie @media em outros arquivos e não repita um seletor dentro do mesmo ponto de quebra.
+   ========================================================================== */
+
+/* ---------- TABLET E ABAIXO (≤ 1100px) ---------- */
+@media (max-width: 1100px) {
+  /* cabeçalho */
+  .hdr { min-height: 0; padding: 10px 12px; }
+  body[data-theme="senna_brasil"] .hdr { padding-bottom: 36px; } /* deixa a faixa verde/branca/azul embaixo dos botões */
+  .headerAligned { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "brand dock" "tool tool"; row-gap: 14px; min-height: 0; align-content: start; }
+  .compactBrand { grid-area: brand; align-self: center; } .compactBrand h1 { max-width: min(230px, calc(100% - 85px)); }
+  .saveDock { grid-area: dock; flex: none; align-self: center; } .saveDock .btn { min-width: 72px; min-height: 42px; padding: 0 15px; font-size: 11.5px; }
+  .toolbarCenter { grid-area: tool; width: 100%; max-width: 100%; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding: 0 2px 4px; }
+  .toolbarCenter::-webkit-scrollbar { display: none; }
+  .primaryButtons { flex-wrap: nowrap; gap: 8px; }
+  :root { --ui-fs: 12px; }
+  .primaryButtons .btn { min-height: 44px; padding: 0 15px; flex: none; }
+  .hambBtn { width: 40px; height: 40px; flex: none; }
+  .statusPill { min-width: 118px; padding: 8px 10px; font-size: 11px; }
+  .userBadge { display: none; }
+
+  /* estrutura da página e painéis */
+  .container { grid-template-columns: minmax(0, 1fr); padding: 8px clamp(5px, 1.3vw, 10px) 22px; }
+  .mainCol { order: 1; } .sidebarCol { order: 2; }
+  body.surgeon-mode .container { grid-template-columns: minmax(0, 1fr); }
+  body.surgeon-mode .surgeryFilterBar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sectionHead .ttl { font-size: 15px; } .sectionHead .sub { font-size: 11px; } .card { border-radius: 16px; } .surgeryStats { grid-template-columns: 1fr; }
+
+  /* avisos do CRM */
+  .crmGlobalAlertStrip { width: calc(100% - 20px); }
+  .crmAlertTile { width: clamp(190px, 27vw, 250px); }
+
+  /* calendário */
+  .sideOut { display: none; }
+  .dowShell { grid-template-columns: 0 minmax(0, 1fr) 0; gap: 0; padding: 10px 8px 0; } .calFrame { grid-template-columns: minmax(0, 1fr); padding: 10px 8px; }
+  .day { --dh: calc(var(--cellH) * .96 + 5px); height: var(--dh); border-radius: 10px; } .day .num { font-size: 12px; }
+  .dow { font-size: 12px; padding: 9px 0; }
+  .month { font-size: clamp(18px, calc(11.76px + 1.333vw), 32px); min-width: min(330px, 80%); }
+
+  /* comercial e despesas pessoais */
+  .personalFinanceDashboard { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .personalFinanceFilters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .crmDoctorFilters { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* ---------- CELULAR (≤ 700px) ---------- */
+@media (max-width: 700px) {
+  /* cabeçalho */
+  .statusPill { display: none; }
+  .hdr { padding: 8px; } .headerAligned { row-gap: 10px; } .hambBtn { width: 38px; height: 38px; }
+  :root { --ui-fs: 11.5px; }
+  .primaryButtons { display: flex; width: auto; }
+  .primaryButtons .btn { min-height: 42px; padding: 0 12px; }
+
+  /* avisos do CRM */
+  .crmGlobalAlertStrip { flex-direction: column; align-items: stretch; }
+  .crmAlertTile { width: 100%; min-height: 38px; align-items: center; }
+
+  /* calendário: datas compactas (cerca de 51 x 68 px) com 3 eventos pequenos empilhados */
+  .day { --dh: calc(var(--cellH) * .68); --chip-h: clamp(12px, min(calc((var(--dh) - 25px) / 3.52), 22cqw), 44px); height: var(--dh); padding: 4px; gap: 3px; }
+  .chip { font-size: clamp(8px, calc(var(--chip-h) * .7), 10px); }
+  .chipMark { display: none; }
+  .grid, .dowRow { gap: 3px; } .dowShell { padding: 6px 2px 0; } .calFrame { padding: 6px 2px; }
+  .dow { font-size: 10px; padding: 8px 2px; }
+  .month { padding: 4px 12px; min-width: 100%; font-size: 18px; }
+  .mainCalendarCard .sectionHead { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; padding: 8px; }
+  .mainCalendarCard .monthRow { grid-column: 1 / -1; grid-row: 2; width: 100%; }
+  .mainCalendarCard .month { min-width: 100%; }
+  #btnNew, #btnDayHCal { justify-self: stretch; min-height: 44px; white-space: normal; text-align: center; line-height: 1.15; padding: 0 8px; }
+  #btnNew { grid-column: 1; grid-row: 1; } #btnDayHCal { grid-column: 2; grid-row: 1; }
+
+  /* painéis laterais e cirurgias */
+  .sumBox .val { font-size: 17px; }
+  .surgeryFilterBar, body.surgeon-mode .surgeryFilterBar { grid-template-columns: 1fr; }
+
+  /* janelas e formulários: ocupam a tela e os campos ficam em uma coluna */
+  .ov, #ovLogin, #ovRegister { padding: calc(8px + env(safe-area-inset-top)) 8px calc(8px + env(safe-area-inset-bottom)); }
+  .modal { --modal-pad: 12px; width: 100%; max-height: calc(100dvh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
+  .mHead h3 { font-size: 16px; }
+  .row2, .row3, .catRow, .catGrid, .auditTools { grid-template-columns: minmax(0, 1fr); }
+  .backupMetaGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .colorGrid { grid-template-columns: repeat(5, 1fr); }
+  .input { font-size: 16px; } /* abaixo de 16px o iPhone dá zoom automático ao tocar num campo */
+  .mFoot .mBtn { flex: 1 1 140px; }
+
+  /* comercial e despesas pessoais */
+  .personalFinanceDashboard { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .personalFinanceDashboard > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .personalFinanceForm, .personalFinanceFilters, .crmFormGrid, .crmFormGrid3, .crmCommercialBox, .commercialChartGrid, .crmToolbar,
+  .crmDoctorFilters, .crmDoctorFilters.commercialCombinedFilters { grid-template-columns: minmax(0, 1fr); }
+  .commercialKpis, .crmTimeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .crmTabs { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+  .span2, .personalFinanceFilters > :nth-child(2) { grid-column: 1 / -1; } /* "ocupar 2 colunas" cria coluna extra numa grade de 1 coluna */
+
+  /* cartões de pacientes/leads e recontatos: tudo empilhado, selos podem quebrar linha */
+  .crmCardSummary { grid-template-columns: minmax(0, 1fr) auto; gap: 8px 10px; }
+  .crmCardSummary > :first-child { grid-column: 1 / -1; }
+  .crmBadgeRow { justify-content: flex-start; margin-top: 0; grid-column: 1 / 2; }
+  .crmBadge { white-space: normal; max-width: 100%; }
+  .crmOverdueItem { grid-template-columns: minmax(0, 1fr); }
+  .crmOverdueActions { justify-content: flex-start; }
+  .crmOverdueName, .crmOverdueMeta { overflow-wrap: anywhere; }
+}
+
+/* ---------- CELULAR ESTREITO (≤ 400px) ---------- */
+@media (max-width: 400px) {
+  .personalExpenseSummary { grid-template-columns: minmax(0, 1fr) auto; }
+  .personalExpenseSummary > :first-child { grid-column: 1 / -1; }
+  .personalExpenseSummary b, .personalExpenseSummary small { overflow-wrap: anywhere; }
+  .personalFinanceKpi b { font-size: 17px; }
+}
