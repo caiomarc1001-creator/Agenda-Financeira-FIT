@@ -134,9 +134,6 @@ function applyTheme() {
     const grp = t.groups[a.id]; if (!grp) return;
     Object.entries(a.build({ ...areaDefaults(a), ...grp })).forEach(([k, v]) => { document.body.style.setProperty(k, v); appliedVars.push(k); });
   });
-  /* o título do cabeçalho tem efeito 3D; a sombra depende de o texto ser claro ou escuro */
-  const tc = AutoContrast.parse(getComputedStyle(document.querySelector('.compactBrand h1')).color);
-  document.body.dataset.titleTone = (tc.r * .299 + tc.g * .587 + tc.b * .114) / 255 > .55 ? 'light' : 'dark';
   AutoContrast.schedule();
 }
 
