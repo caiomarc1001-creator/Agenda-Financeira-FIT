@@ -16,7 +16,7 @@
   .hdr { min-height: 0; padding: 10px clamp(5px, 1.3vw, 10px); } /* mesma margem lateral do conteúdo */
   body[data-theme="senna_brasil"] .hdr { padding-bottom: 36px; } /* deixa a faixa verde/branca/azul embaixo dos botões */
   .headerAligned { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "brand dock" "tool tool"; row-gap: 14px; min-height: 0; align-content: start; }
-  .compactBrand { grid-area: brand; align-self: center; } .compactBrand h1 { font-size: 20px; max-width: min(250px, calc(100% - 85px)); }
+  .compactBrand { grid-area: brand; align-self: center; } .logo svg { height: 48px; max-width: calc(100vw - 150px); }
   .saveDock { grid-area: dock; flex: none; align-self: center; } .saveDock .btn { min-width: 72px; min-height: 42px; padding: 0 15px; font-size: 11.5px; }
   .toolbarCenter { grid-area: tool; width: 100%; max-width: 100%; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding: 0 2px 4px; }
   .toolbarCenter::-webkit-scrollbar { display: none; }
@@ -55,7 +55,7 @@
   /* cabeçalho */
   .statusPill { display: none; }
   .hdr { padding: 8px clamp(5px, 1.3vw, 10px); } .headerAligned { row-gap: 10px; } .hambBtn { width: 38px; height: 38px; }
-  .compactBrand h1 { font-size: 17px; }
+  .logo svg { height: 42px; }
   :root { --ui-fs: 11.5px; }
   .primaryButtons { display: flex; width: auto; }
   .primaryButtons .btn { min-height: 42px; padding: 0 12px; }
@@ -71,11 +71,6 @@
   .grid, .dowRow { gap: 3px; } .dowShell { padding: 6px 2px 0; } .calFrame { padding: 6px 2px; }
   .dow { font-size: 10px; padding: 8px 2px; }
   .month { padding: 4px 12px; min-width: 100%; font-size: 18px; }
-  .mainCalendarCard .sectionHead { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; padding: 8px; }
-  .mainCalendarCard .monthRow { grid-column: 1 / -1; grid-row: 2; width: 100%; }
-  .mainCalendarCard .month { min-width: 100%; }
-  #btnNew, #btnDayHCal { justify-self: stretch; min-height: 44px; white-space: normal; text-align: center; line-height: 1.15; padding: 0 8px; }
-  #btnNew { grid-column: 1; grid-row: 1; } #btnDayHCal { grid-column: 2; grid-row: 1; }
 
   /* painéis laterais e cirurgias */
   .sumBox .val { font-size: 17px; }
@@ -116,4 +111,14 @@
   .personalExpenseSummary > :first-child { grid-column: 1 / -1; }
   .personalExpenseSummary b, .personalExpenseSummary small { overflow-wrap: anywhere; }
   .personalFinanceKpi b { font-size: 17px; }
+}
+
+/* ---------- CABEÇALHO DO CALENDÁRIO (depende da largura do próprio cartão, não da tela) ----------
+   Vale no celular e também no desktop quando o calendário fica estreito (ex.: Modo Cirurgião). */
+@container cal (max-width: 680px) {
+  .mainCalendarCard .sectionHead { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; padding: 8px; }
+  .mainCalendarCard .monthRow { grid-column: 1 / -1; grid-row: 2; width: 100%; }
+  .mainCalendarCard .month { min-width: 100%; }
+  #btnNew, #btnDayHCal { justify-self: stretch; min-height: 44px; white-space: normal; text-align: center; line-height: 1.15; padding: 0 8px; }
+  #btnNew { grid-column: 1; grid-row: 1; } #btnDayHCal { grid-column: 2; grid-row: 1; }
 }
