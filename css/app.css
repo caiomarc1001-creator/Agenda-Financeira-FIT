@@ -27,14 +27,15 @@
 
 /* ---------- cabeçalho ---------- */
 .hdr {
-  position: relative; z-index: 5000; display: flex; padding: 12px; min-height: 112px; max-width: 100%;
+  --logo-w: min(var(--side-w), 320px); /* o logotipo ocupa a largura da barra lateral esquerda */
+  position: relative; z-index: 5000; display: flex; padding: 12px; min-height: calc(var(--logo-w) * .28 + 60px); max-width: 100%;
   background-image: var(--hdr-img); background-color: var(--hdr-col); border-bottom: var(--hdr-border); box-shadow: var(--hdr-shadow); color: var(--hdrtxt-color);
 }
-.headerAligned { position: relative; z-index: 5; width: 100%; display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr) auto; align-items: stretch; align-content: center; gap: 12px; min-height: 88px; }
+.headerAligned { position: relative; z-index: 5; width: 100%; display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr) auto; align-items: stretch; align-content: center; gap: 12px; min-height: calc(var(--logo-w) * .28 + 36px); }
 .headerAligned > * { min-width: 0; } /* o Safari não encolhe itens de grade sem isto e o cabeçalho passa da tela */
-.compactBrand { display: flex; align-items: center; padding-left: var(--brand-padl); min-width: 0; }
+.compactBrand { display: flex; align-items: center; justify-content: center; min-width: 0; }
 .compactBrand h1.logo { line-height: 0; }
-.logo svg { display: block; height: clamp(46px, 3.9vw, 56px); width: auto; max-width: 100%; overflow: visible; }
+.logo svg { display: block; width: var(--logo-w); height: auto; max-width: 100%; overflow: visible; }
 .logo .logoMark { fill: var(--acc); }
 .logo text { font-family: var(--font); font-weight: 1000; fill: currentColor; color: var(--ui-header-text); }
 .logo .logoA { font-size: 46px; } .logo .logoB { font-size: 25px; } /* a palavra curta é maior; as duas ocupam a mesma largura */
