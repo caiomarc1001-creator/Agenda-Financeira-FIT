@@ -53,6 +53,9 @@ Abra `index.html` num navegador comum (Chrome, Edge, Firefox, Safari) ou publiqu
 4. **Um arquivo por assunto.** Se um arquivo passar de umas 500 linhas, divida por assunto (foi o que aconteceu com o `calendar.js`).
 5. **Dados:** o estado inteiro vai para `users/{uid}/agenda/state`. Ao criar um campo novo, defina o valor padrão em `state.js` (`defaultState`/`normalizeState`) para que dados antigos continuem abrindo.
 6. **Textos legíveis:** não é preciso escolher cor de texto "na mão" para cada fundo; `contrast.js` garante o contraste. Cores de eventos usam `bestText()` (`util.js`).
+7. **Botões de recolher/expandir** usam a classe `toggleBtn` (mesmo tamanho, sempre à direita). Em cabeçalhos de seção, o total fica em cima e os botões embaixo, à direita.
+8. **Cabeçalho do calendário** reage à largura do próprio cartão (`@container cal` em `responsive.css`), não só à da tela; por isso funciona também no Modo Cirurgião.
+9. **Logotipo** é um SVG inline no `index.html` (classe `.logo`, estilos em `app.css`). O comprimento das palavras é fixado por `textLength`, então as duas linhas têm a mesma largura.
 
 ## Antes de publicar
 
