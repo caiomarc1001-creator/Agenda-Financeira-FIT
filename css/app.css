@@ -33,13 +33,13 @@
 .headerAligned { position: relative; z-index: 5; width: 100%; display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr) auto; align-items: stretch; align-content: center; gap: 12px; min-height: 88px; }
 .headerAligned > * { min-width: 0; } /* o Safari não encolhe itens de grade sem isto e o cabeçalho passa da tela */
 .compactBrand { display: flex; align-items: center; padding-left: var(--brand-padl); min-width: 0; }
-.compactBrand h1 {
-  font-size: clamp(18px, 1.75vw, 28px); font-weight: 1000; line-height: 1.08; letter-spacing: .4px; color: var(--ui-header-text);
-  /* 3D: realce claro no canto superior, volume escuro descendo para a direita e sombra suave */
-  text-shadow: -1px -1px 0 rgba(255, 255, 255, .55), 1px 1px 0 rgba(0, 0, 0, .55), 2px 2px 0 rgba(0, 0, 0, .5), 3px 3px 0 rgba(0, 0, 0, .45), 4px 4px 0 rgba(0, 0, 0, .4), 5px 7px 10px rgba(0, 0, 0, .35);
-}
-/* título escuro sobre fundo claro (ex.: Senna): volume mais leve, para não embolar as letras */
-body[data-title-tone="dark"] .compactBrand h1 { text-shadow: -1px -1px 0 rgba(255, 255, 255, .65), 1px 1px 0 rgba(0, 0, 0, .22), 2px 2px 0 rgba(0, 0, 0, .22), 3px 3px 0 rgba(0, 0, 0, .22), 4px 5px 8px rgba(0, 0, 0, .3); }
+.compactBrand h1.logo { line-height: 0; }
+.logo svg { display: block; height: clamp(46px, 3.9vw, 56px); width: auto; max-width: 100%; overflow: visible; }
+.logo .logoMark { fill: var(--acc); }
+.logo text { font-family: var(--font); font-weight: 1000; fill: currentColor; color: var(--ui-header-text); }
+.logo .logoA { font-size: 46px; } .logo .logoB { font-size: 25px; } /* a palavra curta é maior; as duas ocupam a mesma largura */
+.logo .logoSmall { font-size: 13px; font-weight: 900; opacity: .9; }
+.logo .logoRule { stroke: var(--acc); stroke-width: 3; stroke-linecap: round; }
 .toolbarCenter { position: relative; min-width: 0; display: flex; align-items: center; justify-content: flex-start; gap: 8px; padding: 2px 0 5px; }
 :root { --ui-fs: clamp(11px, .97vw, 14px); } /* tamanho de fonte padrão de botões, avisos e eventos */
 :root { --chip-h: 23px; } /* padrão fora do calendário (ex.: prévia da cor); nas datas vale o cálculo de .day */
@@ -103,7 +103,9 @@ body.crm-mode .crmGlobalAlertStrip, body.personal-finance-mode .crmGlobalAlertSt
 .sidebarCol .section { margin-top: 14px; }
 .sectionHead { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: var(--radius); }
 .sectionHead .ttl { font-weight: 1000; color: var(--ttl-color); } .sectionHead .sub { font-size: 12px; color: var(--subtxt-color); line-height: 1.55; }
-.headTools { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; } .headTools.end { justify-content: flex-end; }
+.sectionHead > .smallBtn, .sectionHead > .headTools { margin-left: auto; }
+.headTools { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 6px 8px; } .headTools .sub { flex: 1 0 100%; text-align: right; white-space: nowrap; } /* o total em cima; os botões embaixo, à direita */
+.toggleBtn { min-width: 98px; justify-content: center; } /* todo "Recolher/Expandir" tem o mesmo tamanho e fica à direita */
 .padded { padding: var(--radius); }
 
 .helper, .cloudHint {
@@ -123,7 +125,7 @@ body.crm-mode .crmGlobalAlertStrip, body.personal-finance-mode .crmGlobalAlertSt
 .payRow.payable .b, .payableTotal { color: var(--bad) !important; font-weight: 950; }
 .payRowTop { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; } .payRowTop .a, .payRowTop .b { font-weight: 950; } .payRowTop .a { color: var(--payA-color); }
 .payRow .small { color: var(--paysmall-color); }
-.rowTools { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.rowTools { display: flex; flex-direction: row-reverse; align-items: center; gap: 8px; margin-left: auto; } /* valor, e o botão sempre na ponta direita */
 .rowItem { padding: 8px 0; border-top: 1px dashed var(--line); } .rowBody { margin-top: 6px; }
 
 .surgeryStats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
@@ -131,7 +133,7 @@ body.crm-mode .crmGlobalAlertStrip, body.personal-finance-mode .crmGlobalAlertSt
 .surgeryMini .k { font-size: 11px; font-weight: 950; color: var(--minik-color); } .surgeryMini .v { margin-top: 4px; font-size: 18px; font-weight: 1000; }
 
 /* ---------- calendário ---------- */
-.mainCalendarCard { overflow: hidden; }
+.mainCalendarCard { overflow: hidden; container: cal / inline-size; }
 .mainCalendarCard .sectionHead { position: relative; z-index: 3; min-height: 58px; padding: 7px 12px; background: var(--surface-calendar-title-bg); color: var(--surface-calendar-title-text); border-bottom: var(--caltitle-border); }
 .mainCalendarCard .sectionHead { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 10px; }
 #btnNew, #btnDayHCal { justify-self: start; display: inline-flex; align-items: center; justify-content: center; gap: 7px; white-space: nowrap; min-height: clamp(40px, 3.33vw, 48px); padding: 0 clamp(14px, 1.4vw, 22px); font-size: var(--ui-fs); font-weight: 1000; }
