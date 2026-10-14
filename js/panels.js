@@ -19,7 +19,7 @@ function ruleRowHtml(row, kind) {
   const items = row.items.map(i => `<div class="small rowItem"><b>${dateBR(i.date)}</b> • ${esc(i.type)} • ${esc(i.time)} • ${fmtHours(i.hours)} • ${fmtMoney(i.total)}${payable && i.note ? ` • ${esc(i.note)}` : ''}</div>`).join('');
   return `<div class="payRow${payable ? ' payable' : ''}">
     <div class="payRowTop"><div class="a">${esc(row.name)}</div>
-      <div class="rowTools"><button class="smallBtn" type="button" data-row-toggle="${kind}" data-key="${escAttr(key)}">${collapsed ? 'Expandir' : 'Recolher'}</button><div class="b">${fmtMoney(row.total)}</div></div></div>
+      <div class="rowTools"><button class="smallBtn toggleBtn" type="button" data-row-toggle="${kind}" data-key="${escAttr(key)}">${collapsed ? 'Expandir' : 'Recolher'}</button><div class="b">${fmtMoney(row.total)}</div></div></div>
     <div class="small"><b>${payable ? 'Vencimento' : 'Pagamento'}:</b> ${dateBR(row.payDate)} • <b>Competência:</b> ${dateBR(row.from)} → ${dateBR(row.to)} • <b>${payable ? 'Contas' : 'Eventos'}:</b> ${row.count} • <b>Horas:</b> ${fmtHours(row.hours)}</div>
     <div class="rowBody" style="display:${collapsed ? 'none' : 'block'}">${items}</div></div>`;
 }
