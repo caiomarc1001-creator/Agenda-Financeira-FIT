@@ -81,13 +81,13 @@ body[data-auth="on"] .mFoot.authOnly { display: flex; }
 @keyframes pulse { 0% { transform: scale(.8); opacity: .4; } 50% { transform: scale(1.25); opacity: 1; } 100% { transform: scale(.8); opacity: .4; } }
 
 /* ---------- alertas comerciais ---------- */
-.crmGlobalAlertStrip { display: none; position: relative; z-index: 50; margin: var(--strip-mt) 12px 0 calc(12px + var(--side-w) + 12px); gap: 6px; flex-wrap: wrap; justify-content: flex-start; } /* começa na mesma linha do calendário */
+.crmGlobalAlertStrip { display: none; position: relative; z-index: 50; margin: var(--strip-mt) 12px 0 calc(12px + var(--side-w) + 12px); gap: 8px; } /* ocupa a largura do calendário: mesma borda esquerda e direita */
 body.crm-mode .crmGlobalAlertStrip, body.personal-finance-mode .crmGlobalAlertStrip { margin-left: 12px; }
-.crmGlobalAlertStrip.on { display: flex; }
+.crmGlobalAlertStrip.on { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 /* Avisos compactos: cor sólida uniforme e texto com contraste fixo (independe do tema). */
 .crmAlertTile {
   --tile-bg: #c62828; --tile-fg: #fff; --tile-line: rgba(255, 255, 255, .55);
-  display: flex; align-items: flex-start; justify-content: space-between; gap: 6px; flex: 0 0 auto; width: clamp(190px, 16vw, 250px); min-height: 40px; padding: 5px 8px; text-align: left;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 6px; min-width: 0; min-height: 40px; padding: 5px 8px; text-align: left;
   color: var(--tile-fg); background: var(--tile-bg); border: 1px solid var(--tile-line); border-radius: 10px; box-shadow: 0 2px 6px rgba(0, 0, 0, .28);
 }
 .crmAlertTile.warn { --tile-bg: #ffb020; --tile-fg: #1c1300; --tile-line: rgba(28, 19, 0, .4); }
