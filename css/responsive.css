@@ -13,7 +13,7 @@
 /* ---------- TABLET E ABAIXO (≤ 1100px) ---------- */
 @media (max-width: 1100px) {
   /* cabeçalho */
-  .hdr { min-height: 0; padding: 10px 12px; }
+  .hdr { min-height: 0; padding: 10px clamp(5px, 1.3vw, 10px); } /* mesma margem lateral do conteúdo */
   body[data-theme="senna_brasil"] .hdr { padding-bottom: 36px; } /* deixa a faixa verde/branca/azul embaixo dos botões */
   .headerAligned { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "brand dock" "tool tool"; row-gap: 14px; min-height: 0; align-content: start; }
   .compactBrand { grid-area: brand; align-self: center; } .compactBrand h1 { font-size: 20px; max-width: min(250px, calc(100% - 85px)); }
@@ -36,7 +36,6 @@
 
   /* avisos do CRM */
   .crmGlobalAlertStrip, body.crm-mode .crmGlobalAlertStrip, body.personal-finance-mode .crmGlobalAlertStrip { margin: var(--strip-mt) clamp(5px, 1.3vw, 10px) 0; } /* mesma margem lateral do conteúdo */
-  .crmAlertTile { width: clamp(190px, 27vw, 250px); }
 
   /* calendário */
   .sideOut { display: none; }
@@ -55,15 +54,15 @@
 @media (max-width: 700px) {
   /* cabeçalho */
   .statusPill { display: none; }
-  .hdr { padding: 8px; } .headerAligned { row-gap: 10px; } .hambBtn { width: 38px; height: 38px; }
+  .hdr { padding: 8px clamp(5px, 1.3vw, 10px); } .headerAligned { row-gap: 10px; } .hambBtn { width: 38px; height: 38px; }
   .compactBrand h1 { font-size: 17px; }
   :root { --ui-fs: 11.5px; }
   .primaryButtons { display: flex; width: auto; }
   .primaryButtons .btn { min-height: 42px; padding: 0 12px; }
 
   /* avisos do CRM */
-  .crmGlobalAlertStrip { flex-direction: column; align-items: stretch; }
-  .crmAlertTile { width: 100%; min-height: 38px; align-items: center; }
+  .crmGlobalAlertStrip.on { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .crmAlertTile { min-height: 38px; align-items: center; }
 
   /* calendário: datas compactas (cerca de 51 x 68 px) com 3 eventos pequenos empilhados */
   .day { --dh: calc(var(--cellH) * .68); --chip-h: clamp(12px, min(calc((var(--dh) - 25px) / 3.52), 22cqw), 44px); height: var(--dh); padding: 4px; gap: 3px; }
