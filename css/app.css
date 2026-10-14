@@ -27,15 +27,16 @@
 
 /* ---------- cabeçalho ---------- */
 .hdr {
-  --logo-w: min(var(--side-w), 320px); /* o logotipo ocupa o espaço entre a borda da tela e o botão de menu */
-  position: relative; z-index: 5000; display: flex; padding: 12px; min-height: calc(var(--logo-w) * .36 + 58px); max-width: 100%;
+  --hamb-w: clamp(38px, 3.2vw, 46px); /* largura do botão de menu; o logotipo termina a essa distância dele */
+  --logo-span: min(calc(var(--side-w) + 14px - var(--hamb-w)), 330px);
+  position: relative; z-index: 5000; display: flex; padding: 12px; min-height: calc(var(--logo-span) * .36 + 58px); max-width: 100%;
   background-image: var(--hdr-img); background-color: var(--hdr-col); border-bottom: var(--hdr-border); box-shadow: var(--hdr-shadow); color: var(--hdrtxt-color);
 }
-.headerAligned { position: relative; z-index: 5; width: 100%; display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr) auto; align-items: stretch; align-content: center; gap: 12px; min-height: calc(var(--logo-w) * .36 + 34px); }
+.headerAligned { position: relative; z-index: 5; width: 100%; display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr) auto; align-items: stretch; align-content: center; gap: 12px; min-height: calc(var(--logo-span) * .36 + 34px); }
 .headerAligned > * { min-width: 0; } /* o Safari não encolhe itens de grade sem isto e o cabeçalho passa da tela */
-.compactBrand { display: flex; align-items: center; justify-content: center; min-width: 0; margin: 0 -2px; } /* a coluna vai da borda da tela ao botão de menu */
+.compactBrand { display: flex; align-items: center; justify-content: flex-end; min-width: 0; margin: 0 calc(var(--hamb-w) - 12px) 0 -2px; } /* da borda da tela até uma largura-de-botão antes do menu */
 .compactBrand h1.logo { line-height: 0; }
-.logo svg { display: block; width: calc(var(--logo-w) + 4px); height: auto; max-width: 100%; overflow: visible; }
+.logo svg { display: block; width: 100%; max-width: 330px; height: auto; overflow: visible; }
 .logo .logoMark { fill: var(--acc); }
 .logo text { font-family: var(--font); font-weight: 1000; fill: currentColor; color: var(--ui-header-text); }
 .logo .logoA { font-size: 50px; } .logo .logoB { font-size: 33px; } /* as duas palavras em destaque, de ponta a ponta */
@@ -54,7 +55,7 @@ body[data-auth="on"] .mFoot.authOnly { display: flex; }
 .hambWrap { position: relative; z-index: 300; }
 .hambBtn {
   touch-action: manipulation;
-  width: clamp(38px, 3.2vw, 46px); height: clamp(38px, 3.2vw, 46px); border-radius: 14px; display: flex; align-items: center; justify-content: center; padding: 0;
+  width: var(--hamb-w); height: var(--hamb-w); border-radius: 14px; display: flex; align-items: center; justify-content: center; padding: 0;
   background-image: var(--hamb-img); background-color: var(--hamb-col); border: var(--hamb-border); box-shadow: var(--hamb-shadow); color: var(--txt);
 }
 .hambLines, .hambLines::before, .hambLines::after { content: ""; display: block; width: 18px; height: 2px; border-radius: 999px; background: currentColor; }
