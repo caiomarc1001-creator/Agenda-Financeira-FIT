@@ -132,7 +132,7 @@ const AutoContrast = (() => {
     for (const el of document.body.querySelectorAll('*')) {
       if (SKIP.has(el.tagName) || el.disabled || el.closest('.day.other')) continue;
       const field = el.matches('input,textarea,select');
-      if (field ? /^(checkbox|radio|file|range|color|hidden)$/.test(el.type) : ![...el.childNodes].some(n => n.nodeType === 3 && /[\wÀ-ÿ]/.test(n.textContent))) continue;
+      if (field ? /^(checkbox|radio|file|range|color|hidden)$/.test(el.type) : ![...el.childNodes].some(n => n.nodeType === 3 && (/[\wÀ-ÿ]/.test(n.textContent) || (el.hasAttribute('data-contrast') && /\S/.test(n.textContent))))) continue; /* símbolo solto (seta, ícone) só entra se marcado com data-contrast */
       if (!el.getClientRects().length) continue;
       const cs = getComputedStyle(el); if (cs.visibility === 'hidden') continue;
       const fg = parse(cs.color); if (fg.a < .05) continue;
