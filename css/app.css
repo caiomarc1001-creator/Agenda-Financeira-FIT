@@ -27,19 +27,19 @@
 
 /* ---------- cabeçalho ---------- */
 .hdr {
-  --logo-w: min(var(--side-w), 320px); /* o logotipo ocupa a largura da barra lateral esquerda */
-  position: relative; z-index: 5000; display: flex; padding: 12px; min-height: calc(var(--logo-w) * .28 + 60px); max-width: 100%;
+  --logo-w: min(var(--side-w), 320px); /* o logotipo ocupa o espaço entre a borda da tela e o botão de menu */
+  position: relative; z-index: 5000; display: flex; padding: 12px; min-height: calc(var(--logo-w) * .36 + 58px); max-width: 100%;
   background-image: var(--hdr-img); background-color: var(--hdr-col); border-bottom: var(--hdr-border); box-shadow: var(--hdr-shadow); color: var(--hdrtxt-color);
 }
-.headerAligned { position: relative; z-index: 5; width: 100%; display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr) auto; align-items: stretch; align-content: center; gap: 12px; min-height: calc(var(--logo-w) * .28 + 36px); }
+.headerAligned { position: relative; z-index: 5; width: 100%; display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr) auto; align-items: stretch; align-content: center; gap: 12px; min-height: calc(var(--logo-w) * .36 + 34px); }
 .headerAligned > * { min-width: 0; } /* o Safari não encolhe itens de grade sem isto e o cabeçalho passa da tela */
-.compactBrand { display: flex; align-items: center; justify-content: center; min-width: 0; }
+.compactBrand { display: flex; align-items: center; justify-content: center; min-width: 0; margin: 0 -2px; } /* a coluna vai da borda da tela ao botão de menu */
 .compactBrand h1.logo { line-height: 0; }
-.logo svg { display: block; width: var(--logo-w); height: auto; max-width: 100%; overflow: visible; }
+.logo svg { display: block; width: calc(var(--logo-w) + 4px); height: auto; max-width: 100%; overflow: visible; }
 .logo .logoMark { fill: var(--acc); }
 .logo text { font-family: var(--font); font-weight: 1000; fill: currentColor; color: var(--ui-header-text); }
-.logo .logoA { font-size: 46px; } .logo .logoB { font-size: 25px; } /* a palavra curta é maior; as duas ocupam a mesma largura */
-.logo .logoSmall { font-size: 13px; font-weight: 900; opacity: .9; }
+.logo .logoA { font-size: 50px; } .logo .logoB { font-size: 33px; } /* as duas palavras em destaque, de ponta a ponta */
+.logo .logoSmall { font-size: 12.5px; font-weight: 900; opacity: .9; }
 .logo .logoRule { stroke: var(--acc); stroke-width: 3; stroke-linecap: round; }
 .toolbarCenter { position: relative; min-width: 0; display: flex; align-items: center; justify-content: flex-start; gap: 8px; padding: 2px 0 5px; }
 :root { --ui-fs: clamp(11px, .97vw, 14px); } /* tamanho de fonte padrão de botões, avisos e eventos */
