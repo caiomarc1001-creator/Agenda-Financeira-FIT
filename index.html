@@ -16,7 +16,16 @@
 
 <header class="hdr">
   <div class="headerAligned">
-    <div class="compactBrand"><h1>Agenda de Plantões e Produtividade</h1></div>
+    <div class="compactBrand"><h1 class="logo" aria-label="Agenda de Plantões e Produtividade">
+  <svg viewBox="0 0 330 92" role="img" aria-hidden="true" focusable="false">
+    <defs><mask id="logoMask"><rect width="70" height="70" rx="17" fill="#fff"/><rect x="14" y="22" width="42" height="34" rx="6" fill="none" stroke="#000" stroke-width="5"/><rect x="14" y="22" width="42" height="11" fill="#000"/><rect x="21" y="13" width="5" height="14" rx="2.5" fill="#000"/><rect x="44" y="13" width="5" height="14" rx="2.5" fill="#000"/><path d="M23 46l8 7 15-15" fill="none" stroke="#000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></mask></defs>
+    <rect class="logoMark" y="11" width="70" height="70" rx="17" mask="url(#logoMask)" transform="translate(0 0)"/>
+    <text class="logoBig logoA" x="86" y="43" textLength="244" lengthAdjust="spacing">AGENDA</text>
+    <line class="logoRule" x1="86" y1="56" x2="148" y2="56"/><text class="logoSmall" x="208" y="60" text-anchor="middle" textLength="104" lengthAdjust="spacing">DE PLANTÕES E</text><line class="logoRule" x1="268" y1="56" x2="330" y2="56"/>
+    <text class="logoBig logoB" x="86" y="86" textLength="244" lengthAdjust="spacing">PRODUTIVIDADE</text>
+  </svg>
+</h1></div>
+
     <div class="toolbarCenter">
       <div class="hambWrap" id="hambWrap">
         <button class="hambBtn" id="hambBtn" type="button" aria-label="Menu" aria-expanded="false"><span class="hambLines"></span></button>
@@ -60,7 +69,7 @@
     <section class="card section">
       <div class="sectionHead">
         <div><div class="ttl">Produtividade mensal</div><div class="sub">Resumo do mês visível</div></div>
-        <button class="smallBtn" id="btnToggleSummary" type="button">Recolher</button>
+        <button class="smallBtn toggleBtn" id="btnToggleSummary" type="button">Recolher</button>
       </div>
       <div class="padded" id="summaryBody">
         <div class="summaryGrid">
@@ -76,7 +85,7 @@
     <section class="card section" id="paymentsSection">
       <div class="sectionHead">
         <div><div class="ttl">Valores a receber</div><div class="sub">Resumo por instituição no mês visível</div></div>
-        <div class="headTools"><div class="sub"><b>Total:</b> <span id="paySum" class="goodText">R$ 0,00</span></div><button class="smallBtn" id="btnTogglePayments" type="button">Recolher</button></div>
+        <div class="headTools"><div class="sub"><b>Total:</b> <span id="paySum" class="goodText">R$ 0,00</span></div><button class="smallBtn toggleBtn" id="btnTogglePayments" type="button">Recolher</button></div>
       </div>
       <div class="padded" id="paymentsBody"><div class="payList" id="payList"></div></div>
     </section>
@@ -85,7 +94,7 @@
       <div class="sectionHead">
         <div><div class="ttl">Contas a pagar</div><div class="sub">Eventos marcados como despesa no mês visível</div></div>
         <div class="headTools end"><div class="sub"><b>Total:</b> <span id="payableSum" class="payableTotal">R$ 0,00</span></div>
-          <button class="smallBtn" id="btnToggleNetBalance" type="button">Abater no saldo</button><button class="smallBtn" id="btnTogglePayables" type="button">Recolher</button></div>
+          <button class="smallBtn" id="btnToggleNetBalance" type="button">Abater no saldo</button><button class="smallBtn toggleBtn" id="btnTogglePayables" type="button">Recolher</button></div>
       </div>
       <div class="padded" id="payablesBody"><div class="helper" id="netBalanceBox" style="display:none;margin-bottom:10px"></div><div class="payList" id="payablesList"></div></div>
     </section>
@@ -93,7 +102,7 @@
     <section class="card section" id="surgerySection">
       <div class="sectionHead">
         <div><div class="ttl">Controle cirúrgico</div><div class="sub">Pacientes operados, convênios e recebimentos</div></div>
-        <div class="headTools"><button class="smallBtn primary" id="btnNewSurgeryRecord" type="button">Adicionar cirurgia</button><button class="smallBtn" id="btnToggleSurgeries" type="button">Recolher</button></div>
+        <div class="headTools"><button class="smallBtn primary" id="btnNewSurgeryRecord" type="button">Adicionar cirurgia</button><button class="smallBtn toggleBtn" id="btnToggleSurgeries" type="button">Recolher</button></div>
       </div>
       <div class="padded" id="surgeriesBody">
         <div class="surgeonModeSearchPanel" id="surgeonModeSearchPanel">
@@ -144,7 +153,7 @@
         <div class="crmPanel" id="crmDoctorSection">
           <div class="crmDoctorReportHead">
             <div><div class="crmDoctorReportTitle">Controle por período · atendimento por médico</div><div class="crmDoctorReportSub">Filtre o período para saber quais e quantos pacientes/leads cada médico atendeu ou acompanhou.</div></div>
-            <button class="smallBtn" id="crmToggleDoctorReport" type="button">Recolher</button>
+            <button class="smallBtn toggleBtn" id="crmToggleDoctorReport" type="button">Recolher</button>
           </div>
           <div class="crmDoctorReport" id="crmDoctorReportBox">
             <div class="crmDoctorReportActions">
