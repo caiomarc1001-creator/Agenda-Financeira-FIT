@@ -49,8 +49,8 @@ function renderCalendar() {
   const label = $('monthLabel');
   label.textContent = monthLabel(y, m);
   const prev = monthAdd(y, m, -1), next = monthAdd(y, m, 1);
-  $('prevMonthMini').textContent = `${monthShort(prev.y, prev.m)} / ${prev.y}`;
-  $('nextMonthMini').textContent = `${monthShort(next.y, next.m)} / ${next.y}`;
+  $('sidePrev').title = `Mês anterior: ${monthShort(prev.y, prev.m)} / ${prev.y}`;
+  $('sideNext').title = `Próximo mês: ${monthShort(next.y, next.m)} / ${next.y}`;
 
   const first = new Date(y, m, 1), start = new Date(y, m, 1 - first.getDay()), today = todayISO();
   const grid = $('grid');
